@@ -1,0 +1,9 @@
+{% extends 'users/base.html' %}
+{% block content %}
+{% include 'users/around_form.html' %}
+<form method ="POST" enctype="multipart/form-data"> {% csrf_token %}
+    {{user_form.as_p}}
+    {{profile_form.as_p}}
+    <input type="submit" class="btnRegister"  value="Register"/>             
+</form>                                 
+{% endblock %}         

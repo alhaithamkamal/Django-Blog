@@ -1,5 +1,9 @@
 from django.shortcuts import render
+from django.http import  HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 
-# Create your views here.
+@login_required
 def posts(request):
-    return render(request, 'homepage.html')
+    print(request.user.is_authenticated)
+    return render(request, 'posts/homepage.html')
+
