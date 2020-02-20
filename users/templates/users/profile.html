@@ -1,0 +1,10 @@
+{% extends 'users/base.html' %} {% block content %}
+{%if userprofile.profile_pic%}
+<img src="{{userprofile.profile_pic.url}}" alt="user_profile_pic" width="200" height="200" />
+{%endif%}
+<br>
+<h3>{{user.first_name}} {{user.last_name}}</h3>
+<br>
+<h3>{{user.email}}</h3>
+
+{% endblock %}

@@ -25,7 +25,7 @@
   border-top-left-radius: 10% 50%;
   border-bottom-left-radius: 10% 50%;
 }
-.register-left img {
+.register-left .logo {
   margin-top: 15%;
   margin-bottom: 5%;
   width: 25%;
@@ -100,4 +100,9 @@
   margin-top: 8%;
   margin-bottom: -15%;
   color: #495057;
+}
+form .form-control {
+  background-color: #1b54f0;
+  color: white;
+  font-size: large;
 }

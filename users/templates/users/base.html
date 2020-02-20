@@ -9,12 +9,13 @@
     <script src="{% static 'users/bootstrap/js/bootstrap.min.js'%}"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link href="{% static 'users/style.css' %}" rel="stylesheet">
+    <link href="{% static 'users/bluma.min.css' %}" rel="stylesheet">
 </head>
 <body>
 <div class="container register">
     <div class="row">
         <div class="col-md-3 register-left">
-            <img src="{% static 'users/imgs/logo_white.png'%}" alt=""/>
+            <img class="logo" src="{% static 'users/imgs/logo_white.png'%}" alt=""/>
             {% block content %}
             {% endblock  %}
         </div>

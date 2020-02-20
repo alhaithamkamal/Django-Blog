@@ -10,13 +10,13 @@ class RegistrationForm(UserCreationForm):
         
     email = forms.EmailField(required=True,max_length=100,
                             widget=forms.EmailInput(attrs={'class': 'form-control'}))
+    password1 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}),label="password",help_text="at least 8 charachters , numbers , symbols or better mix them")
+    password2 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}),label="confirm password")
     class Meta:
         model = User
-        fields =['username','email','password1' ,'password2','first_name' , 'last_name' ]
+        fields =['username','email','first_name' , 'last_name' ]
         widgets = {
 			'username' : forms.TextInput(attrs={'class': 'form-control'}),
-			'password1' : forms.PasswordInput(attrs={'class': 'form-control'}),
-			'password2' : forms.PasswordInput(attrs={'class': 'form-control'}),
             'first_name':forms.TextInput(attrs={'class': 'form-control'}),
             'last_name':forms.TextInput(attrs={'class': 'form-control'}),
 		}
