@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm ,AuthenticationForm ,UsernameField
 from .models import Profile
+from django.http import  HttpResponseRedirect
 
 class RegistrationForm(UserCreationForm):
 
@@ -10,8 +11,8 @@ class RegistrationForm(UserCreationForm):
         
     email = forms.EmailField(required=True,max_length=100,
                             widget=forms.EmailInput(attrs={'class': 'form-control'}))
-    password1 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}),label="password",help_text="at least 8 charachters , numbers , symbols or better mix them")
-    password2 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}),label="confirm password")
+    password1 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control','placeholder': 'Enter new password'}),label="password",help_text="at least 8 charachters , numbers , symbols or better mix them")
+    password2 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control','placeholder': 'Confirm your password'}),label="confirm password")
     class Meta:
         model = User
         fields =['username','email','first_name' , 'last_name' ]
@@ -31,3 +32,9 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['profile_pic',]
+
+class LoginForm(AuthenticationForm):          
+    username = UsernameField(
+        widget=forms.TextInput(attrs={'class': 'form-control', 'autofocus': True, 'placeholder': 'username'})
+    )
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'password'}))

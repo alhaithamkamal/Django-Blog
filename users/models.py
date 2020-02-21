@@ -4,12 +4,13 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-# using FileSystemStorage class in order to save profile pics into the specified folder which 
-#in that case is the media root 
-#media root folder path is set in settings.py file
+''' using FileSystemStorage class in order to save profile pics into the specified folder which 
+    in that case is the media root 
+    media root folder path is set in settings.py file'''
 fs = FileSystemStorage()
 
 class Profile(models.Model):
+    
     '''Custom profile class extends the user model for adding extra fields to user in a seperate 
        table that has one to one relationship with user table(user model) .
        User model is already provided by django'''
@@ -21,9 +22,6 @@ class Profile(models.Model):
     #categories   # there will be a relationship here many to many ( user -> categories)
     def __str__(self):
         return self.user.username
-    class Meta:
-        verbose_name ='Profile'
-        verbose_name_plural = 'Profiles'
 
 ''' the following methods benifit from signals provided by django in order
     connect events between user model and profile model . for instance if a user is created

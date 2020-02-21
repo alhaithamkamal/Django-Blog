@@ -2,7 +2,7 @@
 {% block content %}
 {% include 'users/around_form.html' %}
 <form method ="POST"> {% csrf_token %}
-    {{form.as_p}}  
+    {{login_form.as_p}}  
     <input type="submit" class="btnRegister"  value="Login"/>             
 </form>                                 
 {% endblock  %}           
