@@ -1,5 +1,8 @@
 from django.shortcuts import render
+from .models import Post, Tag, Category
 
 # Create your views here.
 def posts(request):
-    return render(request, 'homepage.html')
+    posts = Post.objects.all()
+    context = {'posts': posts}
+    return render(request, 'homepage.html', context)
