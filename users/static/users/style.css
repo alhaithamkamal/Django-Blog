@@ -106,3 +106,7 @@ form .form-control {
   color: white;
   font-size: large;
 }
+form .form-control::placeholder {
+  color: white;
+  font-size: large;
+}

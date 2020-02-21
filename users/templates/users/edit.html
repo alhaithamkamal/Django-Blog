@@ -1,0 +1,17 @@
+{% extends 'users/base.html' %}
+
+{% block content %}
+ {% include 'users/around_form.html' %}
+ <div>
+    <a class="btn btn-primary" href={% url 'change_password' %}>change password</a>
+</div>
+
+<form method ="POST" enctype="multipart/form-data"> {% csrf_token %}
+    {{edit_form.as_p}} 
+    {{profile_form.as_p}}   
+    <input type="submit" class="btnRegister"  value="save"/>             
+</form> 
+
+
+
+{% endblock %}

@@ -1,1 +1,5 @@
 <h1>you are blocked</h1>
+<h2>you can contact one of the following admins for further details </h2>
+{% for admin in admins %}
+<h2>{{admin.email}}</h2>
+{% endfor %}

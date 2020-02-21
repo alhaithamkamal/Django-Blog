@@ -16,6 +16,5 @@ def unlock_user(user):
     profile.is_locked = False
     profile.save()
 def isLocked(user):
-    profile = Profile.objects.get(user=user)
-    return profile.is_locked
+    return user.profile.is_locked
 

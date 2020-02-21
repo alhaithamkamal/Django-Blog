@@ -7,7 +7,7 @@
     <form action="{% url 'register'%}"" method="POST" enctype="multipart/form-data">
         {% csrf_token %} 
         {% for non_field_error in user_form.non_field_errors %}
-                        <p class="help is-danger">{{ non_field_error }}</p>
+                        <p style="color:red;" class="help is-danger">{{ non_field_error }}</p>
                     {% endfor %}
                     {% for field in user_form %}
                         <div class="field">

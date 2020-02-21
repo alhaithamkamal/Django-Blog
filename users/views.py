@@ -1,19 +1,25 @@
 from django.shortcuts import render 
 from django.http import  HttpResponseRedirect
-from .forms import RegistrationForm , ProfileForm , LoginForm
+from .forms import RegistrationForm , ProfileForm , LoginForm , EditProfileForm , ChangePasswordForm
 from .util_funcs import isLocked 
 from posts  import views as post_views
 from .models import Profile
-from django.contrib.auth import login , authenticate
+from django.contrib.auth import login , authenticate ,  update_session_auth_hash
+from django.contrib.auth.models import User
 from .logger import log
 
 def register(request):
+
+    """this custom login view does the following:
+    1- checks if request comes from an already logged in user so it redirects him to hompage again
+    2- check if the method is post and then the submitted form is valid
+    3- saves the user data and his profile data
+    4- login the user and redirects him to profile page in case of success"""
+
     if(not request.user.is_authenticated):
         if request.method == "POST":
             user_form = RegistrationForm(request.POST)
             profile_form = ProfileForm(request.POST, request.FILES ) # get the form and the upladed files
-            print("form valid : ",user_form.is_valid()) # for debugging purposes
-            print("pic valid : ",profile_form.is_valid()) # for debugging purposes
             if user_form.is_valid() : 
                 user =user_form.save() # save the user into database and return it 
                 profile=Profile.objects.get(user = user) # get the profile of the created user
@@ -21,13 +27,13 @@ def register(request):
                 if(file != None):
                     profile.profile_pic = file # add the provided pic to that user profile
                 profile.save() # save the updates to user profile
-                log("created")  # for debugging purposes
+                log("created a new user successfully with username: "+user.username)  # for debugging purposes
                 user = authenticate(username=request.POST["username"] , password =  request.POST["password1"] )
                 if user is not None:
                     login(request , user)
+                    return HttpResponseRedirect("/users/profile") # redirect to user profile page
                 else:
-                    log("cannot login from refistration form")
-                return HttpResponseRedirect("/users/profile") # redirect to user profile page
+                    log("cannot login from refistration form")              
             else:
                 log("invalid registration form") # for debugging purposes          
         else:
@@ -47,9 +53,18 @@ def profile(request):
 
 def blocked(request):
     # this view will be fired when a locked user tries to login
-    return render(request,"users/blocked.html")
+    admins = User.objects.all().filter(is_staff__exact=True)
+    return render(request,"users/blocked.html",{"admins":admins})
 
 def login_view(request):
+
+    """this custom login view does the following:
+    1- checks if request comes from an already logged in user so it redirects him to hompage again
+    2- check if the method is post and then the submitted form is valid
+    3- check if the credentials are correct using authenticate method 
+    4- check if user isn't registered takes him back to login back
+    5- if user is registered but locked redirects him to blocked page"""
+
     if(not request.user.is_authenticated): # check if user is already logged in
         if request.method == "POST": 
             login_form = LoginForm(data=request.POST) # using named parameter as request.Post isn't the first parameter by default
@@ -59,20 +74,83 @@ def login_view(request):
                 user = authenticate(username=username , password = password) # authenticate the user with provided data
                 if user is not None: #user authenticated
                     if(isLocked(user)): 
-                        log(user.username +"blocked user")
+                        log(user.username +" blocked user")
                         return HttpResponseRedirect("/users/blocked") #redirect the user to a custom page for blocked users   
                     else:
                         login(request , user)
-                        log(user.username +"logged in successfully") 
+                        log(user.username +" logged in successfully") 
+                        return HttpResponseRedirect("/") # redirect to user homepage
                 else:
                     log("cannot login from login page")
-                return HttpResponseRedirect("/") # redirect to user homepage
+                
             else:
                 log("invalid login form")
         else:
             login_form = LoginForm()
         context = {"login_form":login_form}
         return render(request , 'users/login.html',context)
+    else:
+        return HttpResponseRedirect("/")
+
+
+def edit_profile(request):
+
+    """this edit profile view does the following:
+    1- checks that user is logged in already or redirects him to homepage
+    2- check if the method is post and then the submitted forms are valid
+    3- update user info and save
+    4- if success redirects the user to profile page"""
+
+    if(request.user.is_authenticated):
+        if request.method == "POST":
+            edit_form = EditProfileForm(data=request.POST)
+            profile_form = ProfileForm(request.POST, request.FILES )
+            user = request.user
+            if(edit_form.is_valid()):
+                log("valid esit form")
+                file =request.FILES.get("profile_pic")
+                user.first_name=request.POST["first_name"]
+                user.last_name=request.POST["last_name"]
+                if(file != None):
+                    user.profile.profile_pic = file
+                user.save()
+                user.profile.save()
+                log(user.username + "  updated his profile")
+                return HttpResponseRedirect("/users/profile")
+            else:
+                log("invalid change form")
+                return HttpResponseRedirect("/")
+        else:
+            edit_form = EditProfileForm()
+            profile_form = ProfileForm()
+            context = {"edit_form":edit_form , "profile_form":profile_form}
+            return render(request , "users/edit.html" , context)
+    else:
+        return HttpResponseRedirect("/")
+
+def change_password(request):
+
+    """this change password view does the following:
+    1- checks that user is logged in already or redirects him to homepage
+    2- check if the method is post and then the submitted forms are valid
+    3- update user password and save
+    4- if success redirects the user to profile page"""
+
+    if(request.user.is_authenticated):
+        if request.method == 'POST':
+            form = ChangePasswordForm(request.user, request.POST)
+            if form.is_valid():
+                user = form.save()
+                update_session_auth_hash(request, user) 
+                log("changed password for "+user.username)
+                return HttpResponseRedirect('/users/profile')
+            else:
+                log("couldn't change password for "+user.username)
+        else:
+            form = ChangePasswordForm(request.user)
+        return render(request, 'users/change_password.html', {
+            'form': form
+        })
     else:
         return HttpResponseRedirect("/")
 

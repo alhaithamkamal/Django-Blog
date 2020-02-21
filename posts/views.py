@@ -8,5 +8,4 @@ from .models import Post, Tag, Category
 def posts(request):
     posts = Post.objects.all()
     context = {'posts': posts}
-    return render(request, 'homepage.html', context)
-
+    return render(request, 'posts/homepage.html', context)
