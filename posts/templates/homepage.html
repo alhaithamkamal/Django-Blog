@@ -13,6 +13,8 @@
         {% for tag in post.tags.all %}
             <h2>tag: {{tag.name}}</h2>
         {% endfor %}
+        <h2>category: {{post.category}}</h2>
+        <h2>user: {{post.user}}</h2>
     {% endfor %}
 </body>
 </html>
