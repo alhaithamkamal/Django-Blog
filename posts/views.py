@@ -1,9 +1,12 @@
 from django.shortcuts import render
 from django.http import  HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from .models import Post, Tag, Category
+
 
 @login_required
 def posts(request):
-    print(request.user.is_authenticated)
-    return render(request, 'posts/homepage.html')
+    posts = Post.objects.all()
+    context = {'posts': posts}
+    return render(request, 'homepage.html', context)
 
