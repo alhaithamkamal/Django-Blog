@@ -16,5 +16,17 @@
         <h2>category: {{post.category}}</h2>
         <h2>user: {{post.user}}</h2>
     {% endfor %}
+    <h2>Categories<h2>
+    {% for category in categories %}
+        <h2>name: {{category.name}}</h2>
+        {% if user in category.user.all %}
+            <a href="unsubscribe/{{category.id}}">unsubscribe</a>
+        {% else %}
+            <a href="subscribe/{{category.id}}">subscribe</a>
+        {% endif %}
+        {% for subscriber in category.user.all %}
+            <h2>subscriber: {{subscriber}}</h2>
+        {% endfor %}
+    {% endfor %}
 </body>
 </html>
