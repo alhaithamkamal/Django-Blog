@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+
+<h1>  post </h1>
+
+<form method= "POST" action=""> {% csrf_token %}
+{{ pt_form.as_p }}
+
+<button type="Submit" value="create post">Save</button>
+<button type="Reset">Cancel</button>
+</form>
+</body>
+</html>
