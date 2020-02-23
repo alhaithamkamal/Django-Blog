@@ -15,9 +15,12 @@ class Category(models.Model):
 class Post(models.Model):
     title = models.CharField(max_length=30)
     body = models.TextField()
-    tags = models.ManyToManyField('Tag')
+    tags = models.ManyToManyField('Tag', blank=True)
     category = models.ForeignKey(Category, on_delete = models.DO_NOTHING)
     user = models.ForeignKey(User, on_delete = models.CASCADE)
+
+    def snippet(self):
+        return self.body[:50]
 
     def __str__(self):
         return self.title
