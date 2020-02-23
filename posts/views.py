@@ -57,7 +57,7 @@ def post_update(request, id):
 def post_delete(request, num):
 	instance = Post.objects.get(id=num)
 	instance.delete()
-	# messages.success(request,"deleted Successly")
+	messages.success(request,"deleted Successly")
 	# return redirect("Posts:list")
 	return HttpResponseRedirect('homepage.html')
 

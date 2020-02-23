@@ -19,7 +19,8 @@ class Post(models.Model):
     date_updated=models.DateTimeField(auto_now =True,verbose_name="date updated")
     slug_url = models.SlugField(blank=True,unique=True)
     #comment = models.ManyToManyField
-    status=models.CharField(max_length=10,choices=STATUS_CHOICIS,default='draft')
+    status=models.CharField(max_length=10,choices=STATUS_CHOICIS,default='published')
+    likes = models.ManyToManyField(User,related_name="post_likes",blank=True)
     class Meta:
         ordering = ('-date_published',)
     def __str__(self):
@@ -41,6 +42,7 @@ def pre_save_post_receiver(sender,instance,*args,**kwargs):
         instance.slug_url = slugify(instance.user.username+"_"+instance.title) 
 
 pre_save.connect(pre_save_post_receiver, sender=Post)        
+
 
 
 
