@@ -63,3 +63,6 @@ def search(request):
     user = request.user
     context = {'page_obj': page_obj, 'categories': categotries,'tags': tags, 'user': user}
     return render(request, 'index.html', context)
+
+def about(request):
+    return render(request, 'about.html')
