@@ -1,5 +1,5 @@
 from django.shortcuts import render ,get_object_or_404, redirect
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect,Http404
 from posts.models import Post
 from posts.form import PostForm
 from django.contrib import messages
@@ -54,12 +54,20 @@ def post_update(request, id):
 
 
    
-def post_delete(request, num):
-	instance = Post.objects.get(id=num)
-	instance.delete()
-	messages.success(request,"deleted Successly")
-	# return redirect("Posts:list")
-	return HttpResponseRedirect('homepage.html')
+# def post_delete(request, num):
+# 	instance = Post.objects.get(id=num)
+# 	instance.delete()
+# 	messages.success(request,"deleted Successly")
+# 	# return redirect("Posts:list")
+# 	return HttpResponseRedirect('homepage.html')
+
+def post_delete(request, id=None):
+    if not request.user.is_staff or not request.user.is_superuser:
+        raise Http404
+    instance = get_object_or_404(Post, id=id)
+    instance.delete()
+    messages.success(request, "Successfully deleted")
+    return redirect("../../posts/list")
 
 def post_create(request):
 	form = PostForm(request.POST or None)
