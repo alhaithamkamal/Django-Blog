@@ -1,4 +1,7 @@
 from django.shortcuts import render
+from django.http import HttpResponse, HttpResponseRedirect
+from posts.models import Post
+from posts.form import PostForm
 
 # Create your views here.
 def posts(request):

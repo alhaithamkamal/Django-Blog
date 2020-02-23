@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{title}}</title>
+</head>
+<body>
+
+	{%for obj in objects_list%}
+		{%if obj.status == 'published'%}	
+			{{obj.title}}</br>
+			{{obj.body}}</br>
+		    {{obj.date_published}}</br>
+		    {%if obj.image %}
+		    	<img src="{{obj.image_url}}"></br>
+		    {%endif%}
+		{%endif%}		    
+		
+	{%endfor%}
+
+
+</body>
+</html>

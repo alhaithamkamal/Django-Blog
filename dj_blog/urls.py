@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from post import views
+from posts import views
 from django.conf import settings
 from django.conf.urls.static import static 
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
