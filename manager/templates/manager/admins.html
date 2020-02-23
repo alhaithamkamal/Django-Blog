@@ -1,0 +1,55 @@
+{% extends 'users/base.html' %}
+
+{% block content %}
+ <table class="table table-lg table-dark">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">First Name</th>
+      <th scope="col">Last Name</th>
+      <th scope="col">username</th>
+       <th scope="col">Last login</th>
+      <th scope="col">Undesired words count</th>
+       <th scope="col">Is Locked</th>
+       <th scope="col" > Is Super User</th>
+       <th scope="col" colspan=4 >Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+{% for admin  in admins %}
+ 
+
+        <tr class="bg-success" >
+ 
+
+  <td >{{admin.id}}</td>
+  <td >{{admin.first_name}}</td>
+  <td >{{admin.last_name}}</td>
+  <td>{{admin.username}}</td>
+  <td >{{admin.last_login}}</td>
+  <td >{{admin.profile.undesired_words_count}}</td>
+  <td >{{admin.profile.is_locked}}</td>
+  <td>{{admin.is_superuser}}</td>
+  {% if superuser %}
+    <td> <a class="btn btn-warning" href="show/{{admin.id}}">show</a></td> 
+    {% if admin.profile.is_locked %}
+     <td> <a class="btn btn-danger"  href="unlock/{{admin.id}}"> Unlock </a></td>
+    {% else %}
+     <td> <a class="btn btn-danger"  href="lock/{{admin.id}}"> Lock </a></td>
+    {% endif %}
+    <td> <a class="btn btn-danger" href="delete/{{admin.id}}">delete</a> </td>
+    <td> <a class="btn btn-danger" href="demote/{{admin.id}}">demote</a> </td>
+  {% else %}
+      <td>no permissions</td>
+      <td>no permissionss</td>
+      <td>no permissions</td>
+      <td>no permissions</td>
+  {% endif %}
+
+  
+</tr>
+
+{% endfor %}
+</tbody>
+</table>
+{% endblock  %}

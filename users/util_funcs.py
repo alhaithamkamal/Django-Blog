@@ -1,5 +1,9 @@
 from .models import Profile
+from dj_blog.settings import BASE_DIR
+import os 
+from users.logger import log
 def promote_to_staff(user):
+    """this function can be used to promot a normal user to be a staff user with the required permissions"""
     user.is_staff = True
     user.save()
 
@@ -17,4 +21,17 @@ def unlock_user(user):
     profile.save()
 def isLocked(user):
     return user.profile.is_locked
+
+def demote_user(user):
+    user.is_staff = False
+    user.save()
+
+def delete_profile_pic(profile_pic):
+    pic_url = BASE_DIR+profile_pic.url
+    try:  
+        os.remove(pic_url)  
+    except FileNotFoundError :
+        log("couldn't find the profile pic") 
+
+    
 

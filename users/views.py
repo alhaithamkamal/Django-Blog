@@ -7,6 +7,8 @@ from .models import Profile
 from django.contrib.auth import login , authenticate ,  update_session_auth_hash
 from django.contrib.auth.models import User
 from .logger import log
+from .util_funcs import delete_profile_pic
+import os
 
 def register(request):
 
@@ -107,11 +109,13 @@ def edit_profile(request):
             profile_form = ProfileForm(request.POST, request.FILES )
             user = request.user
             if(edit_form.is_valid()):
-                log("valid esit form")
+                log("valid edit form")
                 file =request.FILES.get("profile_pic")
                 user.first_name=request.POST["first_name"]
                 user.last_name=request.POST["last_name"]
                 if(file != None):
+                    if(user.profile.profile_pic !=None):
+                        delete_profile_pic(user.profile.profile_pic)
                     user.profile.profile_pic = file
                 user.save()
                 user.profile.save()
@@ -121,7 +125,9 @@ def edit_profile(request):
                 log("invalid change form")
                 return HttpResponseRedirect("/")
         else:
-            edit_form = EditProfileForm()
+            user =request.user
+            user_data = {"first_name":user.first_name ,"last_name":user.last_name }
+            edit_form = EditProfileForm(data=user_data)
             profile_form = ProfileForm()
             context = {"edit_form":edit_form , "profile_form":profile_form}
             return render(request , "users/edit.html" , context)
