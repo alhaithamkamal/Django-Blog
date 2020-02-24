@@ -1,12 +1,26 @@
 {% extends 'users/base.html' %}
+{% load static %}
 {% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'users/style.css' %}">
+ <div class="container register">
+    <div class="row">
+        <div class="col-md-3 register-left">
+            <img class="logo" src="{% static 'users/imgs/logo_white.png'%}" alt=""/> 
                 <h3>You have logged out</h3>
-                <p>You can login again any time you want.</p>
+                <p style="color:white;">You can login again any time you want.</p>
                 <a class="btn btn-primary" href={% url 'login' %}>Log back in</a><br/>
-
             </div>
             <div class="col-md-9 register-right">
                 <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                    <h3 class="register-heading">Hope to see you again soon.</h3>
+                     
+                    <h3 class="register-heading"><strong>Hope to see you again soon.</strong><br><br>Feel free to send your feedback to our staff we really appreciate your 
+                    opinions.</h3>
+                
+                </div>
+    </div>
+</div>
+    </div>
+     </div>
+    </div> 
 {% endblock %}

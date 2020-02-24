@@ -11,18 +11,18 @@ class RegistrationForm(UserCreationForm):
         forms . email field exists in the database already"""
         
     email = forms.EmailField(required=True,max_length=100,
-                            widget=forms.EmailInput(attrs={'class': 'form-control'}))
-    password1 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control','placeholder': 'Enter new password'}),
+                            widget=forms.EmailInput(attrs={'class': 'input100'}))
+    password1 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'input100','placeholder': 'Enter new password'}),
     label="password",help_text="at least 8 charachters , numbers , symbols or better mix them")
-    password2 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control','placeholder': 'Confirm your password'}),
+    password2 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'input100','placeholder': 'Confirm your password'}),
     label="confirm password")
     class Meta:
         model = User
         fields =['username','email','first_name' , 'last_name' ]
         widgets = {
-			'username' : forms.TextInput(attrs={'class': 'form-control'}),
-            'first_name':forms.TextInput(attrs={'class': 'form-control'}),
-            'last_name':forms.TextInput(attrs={'class': 'form-control'}),
+			'username' : forms.TextInput(attrs={'class': 'input100'}),
+            'first_name':forms.TextInput(attrs={'class': 'input100'}),
+            'last_name':forms.TextInput(attrs={'class': 'input100'}),
 		}
     def clean(self):
         email = self.cleaned_data.get("email")
@@ -46,9 +46,9 @@ class LoginForm(AuthenticationForm):
     """custom login form in order to be used with login view"""
 
     username = UsernameField(
-        widget=forms.TextInput(attrs={'class': 'form-control', 'autofocus': True, 'placeholder': 'username'})
+        widget=forms.TextInput(attrs={'class': 'input100', 'autofocus': True, 'placeholder': 'username'})
     )
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'password'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'input100', 'placeholder': 'password'}))
 
 class EditProfileForm(forms.ModelForm):
 
