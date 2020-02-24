@@ -1,9 +1,10 @@
 {% extends 'users/base.html' %}
 
 {% block content %}
- <table class="table table-lg table-dark">
+<div class="container-fluid">
+ <table style="text-align : center;"   class="table table-lg table-dark">
   <thead>
-    <tr>
+    <tr style="text-align : center;">
       <th scope="col">ID</th>
       <th scope="col">First Name</th>
       <th scope="col">Last Name</th>
@@ -22,7 +23,6 @@
   {% else %}
         <tr class="bg-primary">
   {% endif %}
-
   <td >{{user.id}}</td>
   <td >{{user.first_name}}</td>
   <td >{{user.last_name}}</td>
@@ -34,13 +34,15 @@
   {% if user.profile.is_locked %}
      <td> <a class="btn btn-danger"  href="unlock/{{user.id}}"> Unlock </a></td>
   {% else %}
-     <td> <a class="btn btn-danger"  href="lock/{{user.id}}"> Lock </a></td>
+     <td> <a class="btn btn-danger"  href="lock/{{user.id}}" onclick= "return confirm('are you sure ?');"> Lock </a></td>
   {% endif %}
-    <td> <a class="btn btn-danger" href="delete/{{user.id}}">delete</a> </td>
+ 
+    <td> <a class="btn btn-danger"  href="delete/{{user.id}}" onclick= "return confirm('are you sure ?');" >delete</a> </td>
     <td> <a class="btn btn-success" href="promote/{{user.id}}">promote</a> </td>
 </tr>
 
 {% endfor %}
 </tbody>
 </table>
+</div>
 {% endblock  %}

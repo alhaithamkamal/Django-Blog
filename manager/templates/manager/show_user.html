@@ -1,9 +1,41 @@
 {% extends 'users/base.html' %} {% block content %}
-{%if user.profile.profile_pic%}
-<img src="{{user.profile.profile_pic.url}}" alt="user_profile_pic" width="200" height="200" />
-{%endif%}
-<br>
-<h3>{{user.first_name}} {{user.last_name}}</h3>
-<br>
-<h3>{{user.email}}</h3>
+<div class="container">
+  <div class="row mb-5">
+    <div class="col-6">
+      <div class=" mt-5">
+        <div class=" mb-5">
+          {%if user.profile.profile_pic%}
+          <img
+            src="{{user.profile.profile_pic.url}}"
+            alt="user_profile_pic"
+            width="400"
+            height="400"
+          />
+          {% else %}
+          <div style="width: 200 ; height:200;"></div>
+          {%endif%}
+        </div>
+        <div class=" mb-5">
+          <h3 class="mb-3">
+            Full Name : {{user.first_name}} {{user.last_name}}
+          </h3>
+
+          <h3 class="mb-3">Email : {{user.email}}</h3>
+
+          <h4 class="mb-4">Bio :</h4>
+          <h5 class="mb-3">
+            {{user.profile.bio}}
+          </h5>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 mt-5">
+      <h3 class="mb-5">Last Login : {{user.last_login}}</h3>
+      <h3 class="mb-5">
+        Undesired Words Count : {{user.profile.undesired_words_count}}
+      </h3>
+    </div>
+  </div>
+</div>
+
 {% endblock %}

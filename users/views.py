@@ -28,6 +28,7 @@ def register(request):
                 file =request.FILES.get("profile_pic") # get the uplloaded picture if any
                 if(file != None):
                     profile.profile_pic = file # add the provided pic to that user profile
+                profile.bio =request.POST["bio"]
                 profile.save() # save the updates to user profile
                 log("created a new user successfully with username: "+user.username)  # for debugging purposes
                 user = authenticate(username=request.POST["username"] , password =  request.POST["password1"] )
@@ -55,9 +56,11 @@ def profile(request):
 
 def blocked(request):
     # this view will be fired when a locked user tries to login
-    admins = User.objects.all().filter(is_staff__exact=True)
-    return render(request,"users/blocked.html",{"admins":admins})
-
+    if(not request.user.is_authenticated):
+        admins = User.objects.all().filter(is_staff__exact=True)
+        return render(request,"users/blocked.html",{"admins":admins})
+    return HttpResponseRedirect("/")
+    
 def login_view(request):
 
     """this custom login view does the following:
@@ -113,6 +116,7 @@ def edit_profile(request):
                 file =request.FILES.get("profile_pic")
                 user.first_name=request.POST["first_name"]
                 user.last_name=request.POST["last_name"]
+                user.profile.bio = request.POST["bio"]
                 if(file != None):
                     if(user.profile.profile_pic !=None):
                         delete_profile_pic(user.profile.profile_pic)
@@ -127,8 +131,9 @@ def edit_profile(request):
         else:
             user =request.user
             user_data = {"first_name":user.first_name ,"last_name":user.last_name }
+            bio_data ={"bio":user.profile.bio}
             edit_form = EditProfileForm(data=user_data)
-            profile_form = ProfileForm()
+            profile_form = ProfileForm(data=bio_data)
             context = {"edit_form":edit_form , "profile_form":profile_form}
             return render(request , "users/edit.html" , context)
     else:

@@ -27,11 +27,13 @@ def demote_user(user):
     user.save()
 
 def delete_profile_pic(profile_pic):
-    pic_url = BASE_DIR+profile_pic.url
-    try:  
-        os.remove(pic_url)  
-    except FileNotFoundError :
-        log("couldn't find the profile pic") 
+    try:
+        pic_url = BASE_DIR+profile_pic.url
+        log(profile_pic.url)
+        os.remove(pic_url)
+    except Exception as ex:
+        log("no pic"+str(ex))
+     
 
     
 

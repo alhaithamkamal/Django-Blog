@@ -1,8 +1,21 @@
 {% extends 'users/base.html' %} 
 {% block content %}
+{% load static %}
+<script>
+  window.addEventListener("pageshow", function(event) {
+    var historyTraversal =
+      event.persisted ||
+      (typeof window.performance != "undefined" &&
+        window.performance.navigation.type === 2);
+    if (historyTraversal) {
+      window.location.reload();
+    }
+  });
+</script>
+<link rel="stylesheet" href="{% static 'users/forms.css' %}">
 <div class="limiter">
   <div class="container-login100">
-    <div class="wrap-login200">
+    <div class="wrap-login200" style="text-align: center;">
     <form class="login100-form validate-form" action="{% url 'register'%}"" method="POST" enctype="multipart/form-data">
         {% csrf_token %} 
          <span class="login100-form-title p-b-26">
@@ -15,8 +28,21 @@
                         <p style="color:red;" class="help is-danger">{{ non_field_error }}</p>
                     {% endfor %}
                     {% for field in user_form %}
-                        <div class="wrap-input100 validate-input">
+                        <div style="text-align: left;" class="wrap-input100 validate-input">
                             <label for="{{ field.id_for_label }}" class="label">{{ field.label }}</label>
+                            {% if field.name == "username" %}
+                                <img class="ml-2" src="{% static 'users/imgs/user.png' %}" height="25px" width="25px" >
+                           {% comment %} {% elif field.name == "first_name" %}
+                                <img src="{% static 'users/imgs/user.png' %}" height="30px" width="30px" >
+                            {% elif field.name == "last_name" %}
+                                <img src="{% static 'users/imgs/user.png' %}" height="30px" width="30px" > {% endcomment %}
+                            {% elif field.name == "email" %}
+                                  <img class="ml-2"  src="{% static 'users/imgs/mail.png' %}" height="25px" width="25px" >
+                            {% elif field.name == "password1" %}
+                                <img class="ml-2"  src="{% static 'users/imgs/lock.png' %}" height="25px" width="25px">
+                            {% elif field.name == "password2" %}
+                                <img class="ml-2"  src="{% static 'users/imgs/lock.png' %}" height="25px" width="25px" >
+                            {% endif %}
                             {{ field }}
                         {%if field.help_text%}
                         <p class="help">{{field.help_text}} </p>
@@ -27,16 +53,20 @@
             </div>
        {% endfor %}
        <br>
-        {{profile_form.as_p}}
-         <div class="container-login100-form-btn">
-          <div class="wrap-login100-form-btn">
-            <div class="login100-form-bgbtn"></div>
-            <button type="submit" class="login100-form-btn">
-              Signup
-            </button>
-          </div>
+       <div class="container">
+         <div id="profile_picture_form" >
+            {% for field in profile_form %}
+               <label for="{{ field.id_for_label }}" class="label">{{ field.label }}</label>
+                <img class="ml-2 mr-2" src="{% static 'users/imgs/images.png' %}" height="25px" width="25px" >
+              {{field}}
+            {% endfor %}
         </div>
-        <div class="text-center p-t-115">
+      </div>
+        <div class="container mt-4" style="text-align: center;">
+          <button class="btn-lg btn-primary" type="submit">Signup</button>
+        </div>
+       
+        <div class="text-center p-t-20">
 			<span class="txt1">
 				already registered ?
 			</span>
