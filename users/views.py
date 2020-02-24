@@ -7,6 +7,7 @@ from .models import Profile
 from django.contrib.auth import login , authenticate ,  update_session_auth_hash
 from django.contrib.auth.models import User
 from .logger import log
+from django.core.mail import send_mail
 from .util_funcs import delete_profile_pic
 import os
 
@@ -34,6 +35,11 @@ def register(request):
                 user = authenticate(username=request.POST["username"] , password =  request.POST["password1"] )
                 if user is not None:
                     login(request , user)
+                    try:
+                        send_mail('Welcome to our blog','Django Blog team welcomes you to our blog .','DjangoTeam@django.com',[user.email],fail_silently=False,)
+                    except Exception as ex:
+                        log("couldn't send email message"+str(ex))
+                    
                     return HttpResponseRedirect("/users/profile") # redirect to user profile page
                 else:
                     log("cannot login from refistration form")              
