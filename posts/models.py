@@ -20,7 +20,7 @@ class Post(models.Model):
     user = models.ForeignKey(User, on_delete = models.CASCADE)
 
     def snippet(self):
-        return self.body[:50]
+        return self.body[:50]+"..."
 
     def __str__(self):
         return self.title
