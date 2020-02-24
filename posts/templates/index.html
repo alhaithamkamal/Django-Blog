@@ -6,14 +6,13 @@
 <body>
 
 	{%for obj in objects_list%}
-		{%if obj.status == 'published'%}	
+
+			{{obj.id}}</br>
 			{{obj.title}}</br>
 			{{obj.body}}</br>
 		    {{obj.date_published}}</br>
-		    {%if obj.image %}
+		    {{obj.slug_url}}</br>
 		    	<img src="{{obj.image_url}}"></br>
-		    {%endif%}
-		{%endif%}		    
 		
 	{%endfor%}
 

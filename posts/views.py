@@ -25,52 +25,34 @@ def post_list(request):
 
 
 def post_update(request, id):
-	instance =get_object_or_404(Post,id=id)
-	form = PostForm(request.POST or None, instance=instance)
-	if form.is_valid():
-		instance = form.save(commit=False)
-		instance.save()
+	post=get_object_or_404(Post,id=id)
+	if request.method == 'POST':
+		form = PostForm(request.POST, request.FILES, instance=post)
+		if form.is_valid():
+			post = form.save(commit=False)
+			post.user = request.user
+			post.save()	
+		return HttpResponseRedirect('/posts')
+	else:
+		form = PostForm(instance=post)
+		context = {"pt_form": form}
+		return render(request,"post_form.html",context)
 
-
-
-	context = {
-		
-		"title" :instance.title,
-		"instance" : instance,
-		"pt_form" : form,}
-			
-	return render(request, 'post_form.html',context)
-	# st= Post.objects.get(id = num)
-	# if request.method == 'POST':
-	# 	form = PostForm(request.POST,instance=st)
-	# 	if form.is_valid():
-	# 		form.save()
-	# 		return HttpResponseRedirect('homepage.html')
-
-	# else:
-	# 	form = PostForm(instance=st)
-	# 	context = {'pt_form': form}
-	# 	return render(request,'post_form.html', context)
-
-
-   
 def post_delete(request, num):
 	instance = Post.objects.get(id=num)
 	instance.delete()
-	messages.success(request,"deleted Successly")
 	# return redirect("Posts:list")
-	return HttpResponseRedirect('homepage.html')
+	return HttpResponseRedirect('/posts')
 
 def post_create(request):
-	form = PostForm(request.POST or None)
-	if form.is_valid():
-		instance = form.save(commit=False)
-		instance.save()
-	context= {
-	"pt_form":form,
-	}
-	return render(request,"post_form.html",context)
-	
-
-			
-	
+	form = PostForm()
+	if request.method == 'POST':
+		form = PostForm(request.POST, request.FILES)
+		if form.is_valid():
+			post = form.save(commit=False)
+			post.user = request.user
+			post.save()
+			return HttpResponseRedirect('/posts')
+	else:
+		context = {"pt_form": form}
+		return render(request,"post_form.html",context)
