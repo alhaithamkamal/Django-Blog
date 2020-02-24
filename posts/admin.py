@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import Post, Tag, Category
 # # Register your models here.
 class CustomPost(admin.ModelAdmin):
-	fieldsets = (['write post', {'fields': ['title', 'body','image','user','status']}],
+	fieldsets = (['write post', {'fields': ['title', 'body','image','user','status', 'tags']}],
 		['like or dislike',{'fields':['likes']}],)
 	list_display = ['title','image','date_published','slug_url','status',]
 	list_filter =['date_published','title']

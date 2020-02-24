@@ -2,9 +2,11 @@
 <aside id="colorlib-aside" role="complementary" class="js-fullheight">
     <nav id="colorlib-main-menu" role="navigation">
         <ul>
-            <li class="colorlib-active"><a href="/posts">Home</a></li>
-            <li><a href="/posts/about">About</a></li>
+            {% if user.is_staff %}
+            <li><a href="/create">Create Post</a></li>
+            {% endif %}
+            <li class="colorlib-active"><a href="/">Home</a></li>
+            <li><a href="/about">About</a></li>
         </ul>
     </nav>
-</aside> <!-- END COLORLIB-ASIDE -->
-
+</aside>

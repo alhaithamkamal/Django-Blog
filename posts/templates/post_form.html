@@ -1,17 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title></title>
-</head>
-<body>
-
-<h1>  post </h1>
-
+{% extends 'index.html' %}
+{% block post_block %}
+<h1>  Create a post </h1>
 <form method= "POST" action="" enctype="multipart/form-data"> {% csrf_token %}
 {{ pt_form.as_p }}
 
-<button type="Submit" value="create post">Save</button>
-<button type="Reset">Cancel</button>
+<button class="btn btn-info" type="Submit" value="create post">Save</button>
+<a href="/" class="btn btn-danger" type="Reset">Cancel</a>
 </form>
-</body>
-</html>
+{% endblock %}

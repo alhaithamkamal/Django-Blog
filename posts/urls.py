@@ -10,9 +10,9 @@ urlpatterns = [
     path('search', views.search),
     path('about', views.about),
 
-    path('detail/<num>',views.post_detail),
-    path('update/<id>',views.post_update),
-    path('create',views.post_create),
-    path('del/<num>',views.post_delete),
+    path('post/<post_id>',views.post_detail),
+    path('updatepost/<id>',views.post_update),
+    path('createpost',views.post_create),
+    path('delpost/<num>',views.post_delete),
 ]    	
 

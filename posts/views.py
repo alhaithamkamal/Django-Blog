@@ -16,19 +16,27 @@ def posts(request):
     tags = Tag.objects.all()[:10]
     user = request.user
     context = {'page_obj': page_obj, 'categories': categotries,'tags': tags, 'user': user}
-    return render(request, 'index.html', context)
+    return render(request, 'home.html', context)
+
+def post_detail(request , post_id):
+    categotries = Category.objects.all()
+    tags = Tag.objects.all()[:10]
+    user = request.user
+    post = Post.objects.get(id= post_id)
+    context = {'post': post, 'categories': categotries,'tags': tags, 'user': user}
+    return render(request,'single.html', context)
 
 def subscribe(request, cat_id):
     user = request.user
     category = Category.objects.get(id=cat_id)
     category.user.add(user)
-    return HttpResponseRedirect('/posts')
+    return HttpResponseRedirect('/')
 
 def unsubscribe(request, cat_id):
     user = request.user
     category = Category.objects.get(id=cat_id)
     category.user.remove(user)
-    return HttpResponseRedirect('/posts')
+    return HttpResponseRedirect('/')
 
 def categoryPosts(request, cat_id):
     category = Category.objects.get(id=cat_id)
@@ -40,7 +48,7 @@ def categoryPosts(request, cat_id):
     tags = Tag.objects.all()[:10]
     user = request.user
     context = {'page_obj': page_obj, 'categories': categotries,'tags': tags, 'user': user}
-    return render(request, 'index.html', context)
+    return render(request, 'home.html', context)
 
 def tagPosts(request, tag_id):
     tag = Tag.objects.get(id=tag_id)
@@ -52,7 +60,7 @@ def tagPosts(request, tag_id):
     tags = Tag.objects.all()[:10]
     user = request.user
     context = {'page_obj': page_obj, 'categories': categotries,'tags': tags, 'user': user}
-    return render(request, 'index.html', context)
+    return render(request, 'home.html', context)
 
 def search(request):
     query = request.GET.get('q')
@@ -64,22 +72,10 @@ def search(request):
     tags = Tag.objects.filter(Q(name__icontains=query))[:10]
     user = request.user
     context = {'page_obj': page_obj, 'categories': categotries,'tags': tags, 'user': user}
-    return render(request, 'index.html', context)
+    return render(request, 'home.html', context)
 
 def about(request):
     return render(request, 'about.html')
-
-
-
-# Create your views here.
-
-
-
-def post_detail(request , num):
-	instance = Post.objects.get(id= num)
-	context ={'obj':instance}
-	return render(request,'details.html',context)
-
 
 def post_update(request, id):
 	post=get_object_or_404(Post,id=id)
@@ -89,7 +85,7 @@ def post_update(request, id):
 			post = form.save(commit=False)
 			post.user = request.user
 			post.save()	
-		return HttpResponseRedirect('/posts')
+		return HttpResponseRedirect('/')
 	else:
 		form = PostForm(instance=post)
 		context = {"pt_form": form}
@@ -99,7 +95,7 @@ def post_delete(request, num):
 	instance = Post.objects.get(id=num)
 	instance.delete()
 	# return redirect("Posts:list")
-	return HttpResponseRedirect('/posts')
+	return HttpResponseRedirect('/')
 
 def post_create(request):
 	form = PostForm()
@@ -109,7 +105,7 @@ def post_create(request):
 			post = form.save(commit=False)
 			post.user = request.user
 			post.save()
-			return HttpResponseRedirect('/posts')
+			return HttpResponseRedirect('/')
 	else:
 		context = {"pt_form": form}
 		return render(request,"post_form.html",context)
