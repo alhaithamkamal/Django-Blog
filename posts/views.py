@@ -1,10 +1,12 @@
 from django.core.paginator import Paginator
-from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from .models import Post, Tag, Category
 from django.db.models import Q
+from django.shortcuts import render ,get_object_or_404
+from posts.form import PostForm
 
 # Create your views here.
+
 def posts(request):
     posts = Post.objects.all()
     paginator = Paginator(posts, 5)
@@ -66,3 +68,48 @@ def search(request):
 
 def about(request):
     return render(request, 'about.html')
+
+
+
+# Create your views here.
+
+
+
+def post_detail(request , num):
+	instance = Post.objects.get(id= num)
+	context ={'obj':instance}
+	return render(request,'details.html',context)
+
+
+def post_update(request, id):
+	post=get_object_or_404(Post,id=id)
+	if request.method == 'POST':
+		form = PostForm(request.POST, request.FILES, instance=post)
+		if form.is_valid():
+			post = form.save(commit=False)
+			post.user = request.user
+			post.save()	
+		return HttpResponseRedirect('/posts')
+	else:
+		form = PostForm(instance=post)
+		context = {"pt_form": form}
+		return render(request,"post_form.html",context)
+
+def post_delete(request, num):
+	instance = Post.objects.get(id=num)
+	instance.delete()
+	# return redirect("Posts:list")
+	return HttpResponseRedirect('/posts')
+
+def post_create(request):
+	form = PostForm()
+	if request.method == 'POST':
+		form = PostForm(request.POST, request.FILES)
+		if form.is_valid():
+			post = form.save(commit=False)
+			post.user = request.user
+			post.save()
+			return HttpResponseRedirect('/posts')
+	else:
+		context = {"pt_form": form}
+		return render(request,"post_form.html",context)
