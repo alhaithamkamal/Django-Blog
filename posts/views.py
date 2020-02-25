@@ -1,5 +1,6 @@
 from django.shortcuts import render ,get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect,Http404
+from django.views.generic import RedirectView
 from posts.models import Post
 from posts.form import PostForm
 from django.contrib import messages
@@ -9,12 +10,13 @@ from django.contrib import messages
 def posts(request):
     return render(request, 'homepage.html')
 
-
+# to show the context of a post
 def post_detail(request , num):
 	instance = Post.objects.get(id= num)
 	context ={'obj':instance}
 	return render(request,'details.html',context)
 
+#to show all the posts (just only published posts not the draft ) 
 def post_list(request):
 	queryset=Post.objects.all()
 	context={
@@ -23,15 +25,13 @@ def post_list(request):
 	}
 	return render(request,"index.html",context)
 
-
+# to update or edit the post
 def post_update(request, id):
 	instance =get_object_or_404(Post,id=id)
 	form = PostForm(request.POST or None, instance=instance)
 	if form.is_valid():
 		instance = form.save(commit=False)
 		instance.save()
-
-
 
 	context = {
 		
@@ -61,6 +61,8 @@ def post_update(request, id):
 # 	# return redirect("Posts:list")
 # 	return HttpResponseRedirect('homepage.html')
 
+
+# to delete a post 
 def post_delete(request, id=None):
     if not request.user.is_staff or not request.user.is_superuser:
         raise Http404
@@ -69,6 +71,7 @@ def post_delete(request, id=None):
     messages.success(request, "Successfully deleted")
     return redirect("../../posts/list")
 
+# to create a post
 def post_create(request):
 	form = PostForm(request.POST or None)
 	if form.is_valid():
@@ -78,7 +81,14 @@ def post_create(request):
 	"pt_form":form,
 	}
 	return render(request,"post_form.html",context)
-	
 
-			
+# like or dislike post 
+def like_post(request):
+	post= get_object_or_404(Post, id=request.POST.get('post_id'))
+	post.likes.add(request.user)
+	return HttpResponseRedirect(post.get_absolute_url())
+
+
+
+	
 	

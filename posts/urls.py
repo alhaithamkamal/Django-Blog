@@ -10,5 +10,7 @@ urlpatterns = [
     path('update/<id>',views.post_update),
     path('create',views.post_create),
     path('del/<id>',views.post_delete),
+    path('like/',views.like_post ,name="like_post"),
+    
 ]    	
 

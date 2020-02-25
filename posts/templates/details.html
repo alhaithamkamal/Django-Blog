@@ -8,7 +8,11 @@
 	{{obj.body}}</br>
     {{obj.date_published}}</br>
      {{obj.date_published}}</br>
-     <p>likes{{obj.likes.count}}</p></br>
+     <form action="{% url 'like_post' %}" method="post">
+     	{%csrf_token%}
+     	<button type="submit" name="post_id" value="{{post.id}}">likes</button>
+     </form>
+     <p>likes : {{obj.likes.count}} <a href='{{ obj.get_like_url }}'>Like</a></p>
     {%if obj.image %}
     	<img src="{{obj.image_url}}"></br>
     {%endif%}
