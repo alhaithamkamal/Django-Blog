@@ -37,7 +37,7 @@ class ProfileForm(forms.ModelForm):
         else where """
 
     profile_pic =forms.ImageField(required=False)
-    bio = forms.CharField(required = False ,widget=forms.TextInput(attrs={'class': 'form-control'}))
+    bio = forms.CharField(required = False ,widget=forms.Textarea(attrs={"rows":5, "cols":20 ,  'class':'form-control'}))
     class Meta:
         model = Profile
         fields = ["bio",'profile_pic']

@@ -19,7 +19,7 @@ class Profile(models.Model):
     profile_pic = models.ImageField(verbose_name="profile picture",storage=fs)
     undesired_words_count = models.IntegerField(default=0)  # the cumulative number of undesiredwords the user has used 
     is_locked = models.BooleanField(default=False) # determine whether the user is locked or not
-    bio = models.TextField(max_length=300 ,default="")
+    bio = models.TextField(max_length=200 ,default="")
     def __str__(self):
         return self.user.username
 

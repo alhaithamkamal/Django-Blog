@@ -32,10 +32,6 @@
                             <label for="{{ field.id_for_label }}" class="label">{{ field.label }}</label>
                             {% if field.name == "username" %}
                                 <img class="ml-2" src="{% static 'users/imgs/user.png' %}" height="25px" width="25px" >
-                           {% comment %} {% elif field.name == "first_name" %}
-                                <img src="{% static 'users/imgs/user.png' %}" height="30px" width="30px" >
-                            {% elif field.name == "last_name" %}
-                                <img src="{% static 'users/imgs/user.png' %}" height="30px" width="30px" > {% endcomment %}
                             {% elif field.name == "email" %}
                                   <img class="ml-2"  src="{% static 'users/imgs/mail.png' %}" height="25px" width="25px" >
                             {% elif field.name == "password1" %}
@@ -53,12 +49,16 @@
             </div>
        {% endfor %}
        <br>
-       <div class="container">
+       <div class="container" style="text-align:left;">
          <div id="profile_picture_form" >
-            {% for field in profile_form %}
+           {% for field in profile_form %}
+            <div class="mb-3">
                <label for="{{ field.id_for_label }}" class="label">{{ field.label }}</label>
+               {% if field.name == "profile_pic"%}
                 <img class="ml-2 mr-2" src="{% static 'users/imgs/images.png' %}" height="25px" width="25px" >
+                {%endif%}
               {{field}}
+            </div>
             {% endfor %}
         </div>
       </div>
