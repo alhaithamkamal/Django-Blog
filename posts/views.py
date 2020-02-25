@@ -78,18 +78,21 @@ def about(request):
     return render(request, 'about.html')
 
 def post_update(request, id):
-	post=get_object_or_404(Post,id=id)
-	if request.method == 'POST':
-		form = PostForm(request.POST, request.FILES, instance=post)
-		if form.is_valid():
-			post = form.save(commit=False)
-			post.user = request.user
-			post.save()	
-		return HttpResponseRedirect('/')
-	else:
-		form = PostForm(instance=post)
-		context = {"pt_form": form}
-		return render(request,"post_form.html",context)
+    post=get_object_or_404(Post,id=id)
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = request.user
+            tag_list = getTags(request.POST.get('post_tags'))
+            post.save()
+            queryset = Tag.objects.filter(name__in=tag_list)
+            post.tags.set(queryset)
+            return HttpResponseRedirect('/')
+    else:
+        form = PostForm(instance=post)
+        context = {"pt_form": form}
+        return render(request,"post_form.html",context)
 
 def post_delete(request, num):
 	instance = Post.objects.get(id=num)
@@ -98,14 +101,24 @@ def post_delete(request, num):
 	return HttpResponseRedirect('/')
 
 def post_create(request):
-	form = PostForm()
-	if request.method == 'POST':
-		form = PostForm(request.POST, request.FILES)
-		if form.is_valid():
-			post = form.save(commit=False)
-			post.user = request.user
-			post.save()
-			return HttpResponseRedirect('/')
-	else:
-		context = {"pt_form": form}
-		return render(request,"post_form.html",context)
+    form = PostForm()
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = request.user
+            tag_list = getTags(request.POST.get('post_tags'))
+            post.save()
+            queryset = Tag.objects.filter(name__in=tag_list)
+            post.tags.set(queryset)
+            return HttpResponseRedirect('/')
+    else:
+        context = {"pt_form": form}
+        return render(request,"post_form.html",context)
+
+def getTags(string): 
+    tag_list = list(string.split(" ")) 
+    for tag in tag_list:
+        if not Tag.objects.filter(name=tag):
+            Tag.objects.create(name = tag)
+    return tag_list 
