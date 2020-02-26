@@ -7,7 +7,8 @@ from .models import Post, Tag, Category
 from django.db.models import Q
 from django.shortcuts import render ,get_object_or_404
 from posts.form import PostForm
-
+from users.util_funcs import delete_profile_pic
+from users.logger import log
 
 # Create your views here.
 
@@ -87,7 +88,12 @@ def post_update(request, id):
         form = PostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
             post = form.save(commit=False)
+            img = request.FILES.get('image')
+            if (img):
+                if(post.image):
+                    delete_profile_pic(post.image)
             post.user = request.user
+            post.image = img
             tag_list = getTags(request.POST.get('post_tags'))
             post.save()
             queryset = Tag.objects.filter(name__in=tag_list)

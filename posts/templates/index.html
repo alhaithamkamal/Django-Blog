@@ -27,10 +27,12 @@
 					{% for category in categories %}
 					<li>
 					<a href="/category/{{category.id}}">{{category.name}} <span>{{category.post_set.all|length}}</span></a>
-					{% if user in category.user.all %}
-						<a class="text-danger" href="/unsubscribe/{{category.id}}">unsubscribe</a>
-					{% else %}
-						<a class="text-info" href="/subscribe/{{category.id}}">subscribe</a>
+					{% if user.is_authenticated %}
+						{% if user in category.user.all %}
+							<a class="text-danger" href="/unsubscribe/{{category.id}}">unsubscribe</a>
+						{% else %}
+							<a class="text-info" href="/subscribe/{{category.id}}">subscribe</a>
+						{% endif %}
 					{% endif %}
 					</li>
 					{% endfor %}
