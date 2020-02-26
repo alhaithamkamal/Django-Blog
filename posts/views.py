@@ -1,8 +1,6 @@
-from django.shortcuts import render
-from django.http import  HttpResponseRedirect
+from django.http import  HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.http import HttpResponseRedirect
 from .models import Post, Tag, Category, Comment
 from django.db.models import Q
 from django.shortcuts import render ,get_object_or_404
@@ -50,9 +48,6 @@ def post_detail(request,id):
         'tags': tags,
         'user': user
     }
-    if request.is_ajax():
-        html = render_to_string('post_detail', context, request=request)
-        return JasonResponse({'form': html})
     return render(request,'single.html',context)
 
 
@@ -170,10 +165,10 @@ def commentEdit(request, id):
     	form = CommentForm(instance = comment)
     return render (request, 'post_detail.html',{'form':form})       
 
-def commentDelete (request,id):
-	comment = 	Comment.objects.get(id = id)
+def commentDelete (request, post_id, com_id):
+	comment = 	Comment.objects.get(id = com_id)
 	comment.delete()
-	return HttpResponseRedirect('detail')
+	return HttpResponseRedirect('/post/'+post_id)
 
 #to like the post if the user is not in like or dislike tables it will be added one like 
 #if the user in one of the tables he must pressed one more time in the same button 
@@ -189,7 +184,7 @@ def like_post(request,id):
 	else:
 		post.likes.remove(user)	
 		post.save()				
-	return HttpResponseRedirect("/posts/detail/"+id)
+	return HttpResponseRedirect("/post/"+id)
 
 #to dislike the post if the user is not in like or dislike tables it will be added one dislike 
 #if the user in one of the tables he must pressed one more time in the same button 
@@ -210,4 +205,4 @@ def dislike_post(request,id):
 	if(total == 10):
 		post.delete()
 		return HttpResponse("<h1> this post has been deleted </h1>")				
-	return HttpResponseRedirect("/posts/detail/"+id)
+	return HttpResponseRedirect("/post/"+id)

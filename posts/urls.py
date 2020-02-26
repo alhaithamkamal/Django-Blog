@@ -13,10 +13,10 @@ urlpatterns = [
     path('updatepost/<id>',views.post_update),
     path('createpost',views.post_create),
     path('delpost/<num>',views.post_delete),    	
-    path('deletecomment/<int:id>/', views.commentDelete, name='commentDelete'),
+    path('deletecomment/<post_id>/<com_id>', views.commentDelete, name='commentDelete'),
     path('editcomment/<int:id>/', views.commentEdit, name='commentEdit'),
-    path('detail/like_post/<id>',views.like_post ,name="like_post"),
-    path('detail/dislike_post/<id>',views.dislike_post ,name="dislike_post"),
+    path('like_post/<id>',views.like_post ,name="like_post"),
+    path('dislike_post/<id>',views.dislike_post ,name="dislike_post"),
 ]    	
 
 

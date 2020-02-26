@@ -38,8 +38,8 @@ class Post(models.Model):
     date_updated=models.DateTimeField(auto_now =True,verbose_name="date updated")
     slug_url = models.SlugField(blank=True,unique=True)
     status=models.CharField(max_length=10,choices=STATUS_CHOICIS,default='published')
-    likes = models.ManyToManyField(User,related_name="post_likes",blank=True,null=True)
-    dislikes= models.ManyToManyField(User,related_name="post_dislikes",blank=True,null=True)
+    likes = models.ManyToManyField(User,related_name="post_likes",blank=True)
+    dislikes= models.ManyToManyField(User,related_name="post_dislikes",blank=True)
     restrict_comment = models.BooleanField(default=False)
     def snippet(self):
         return self.body[:50]+"..."

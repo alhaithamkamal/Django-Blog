@@ -15,13 +15,13 @@ class PostForm(forms.ModelForm):
 
 
 class CommentForm(forms.ModelForm):
-	content = forms.CharField(label="", widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'reply', 'rows':'9', 'cols':'50'}))
+	content = forms.CharField(label="", widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'reply'}))
 	class Meta:
 		model = Comment
 		fields = ('content',)
 
 class CommentEditForm(forms.ModelForm):
-	content = forms.CharField(label="", widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'reply', 'rows':'9', 'cols':'50'}))
+	content = forms.CharField(label="", widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'reply'}))
 	class Meta:
 		model = Comment
 		fields = ('content',)
