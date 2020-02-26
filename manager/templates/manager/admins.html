@@ -1,5 +1,8 @@
 {% extends 'users/base.html' %} {% block content %}
+{% include 'manager/nav.html' %}
 <div class="container-fluid">
+<div class="row">
+  <div class="col md-12 sm-6">
   <table style="text-align : center;" class="table table-lg table-dark">
     <thead>
       <tr>
@@ -16,7 +19,19 @@
     </thead>
     <tbody>
       {% for admin in admins %}
-
+     {% if admin == request.user%}
+     <tr class="bg-success">
+     <td>{{admin.id}}</td>
+     <td>{{admin.first_name}}</td>
+     <td>{{admin.last_name}}</td>
+     <td>{{admin.username}}</td>
+     <td>{{admin.last_login}}</td>
+     <td>{{admin.profile.undesired_words_count}}</td>
+     <td>{{admin.profile.is_locked}}</td>
+     <td>{{admin.is_superuser}}</td>
+      <td class="bg-primary" colspan="6" style="text-align:center; padding:15px;">you</td>
+    </tr>
+     {%else%}
       <tr class="bg-success">
         <td>{{admin.id}}</td>
         <td>{{admin.first_name}}</td>
@@ -33,9 +48,13 @@
           <a class="btn btn-danger" href="unlock/{{admin.id}}"> Unlock </a>
         </td>
         {% else %}
-        <td><a class="btn btn-danger" href="lock/{{admin.id}}" onclick= "return confirm('are you sure ?');"> Lock </a></td>
+        <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#lockModal{{admin.id}}">
+          lock
+        </button></td>
         {% endif %}
-        <td><a class="btn btn-danger" href="delete/{{admin.id}}" onclick= "return confirm('are you sure ?');">delete</a></td>
+        <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal{{admin.id}}">
+          delete
+        </button></td>
         <td><a class="btn btn-danger" href="demote/{{admin.id}}" onclick= "return confirm('are you sure ?');">demote</a></td>
         {% else %}
         <td>no permissions</td>
@@ -44,9 +63,82 @@
         <td>no permissions</td>
         {% endif %}
       </tr>
+  {%endif%}
+      
+<!-- lock Modal -->
+<div class="modal fade" id="lockModal{{admin.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Lock a user</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       are you sure you want to lock that user?
+      </div>
+      <div class="modal-footer">
+        <a  class="btn btn-secondary" data-dismiss="modal">Close</a>
+        <a  href="lock/{{admin.id}}" class="btn btn-danger">Yes</a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+
+<!-- delete Modal -->
+<div class="modal fade" id="deleteModal{{admin.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Delete a user</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       are you sure you want to delete that user?
+      </div>
+      <div class="modal-footer">
+        <a  class="btn btn-secondary" data-dismiss="modal">Close</a>
+        <a  href="delete/{{admin.id}}" class="btn btn-danger">Yes</a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
 
       {% endfor %}
     </tbody>
   </table>
 </div>
+</div>
+</div>
+
+<div class="row " style="text-align:center" >
+    <div class="col">
+        <div class="block-27">
+           
+          {% if admins.has_previous %}
+          <div   style="display: inline;" class="m-3">
+              <a class="mx-3" href="?page=1">&laquo; first</a>
+              <a href="?page={{ admins.previous_page_number }}">previous</a>
+            </div>
+          {% endif %}
+            <span class="current">
+                Page {{ admins.number }} of {{ admins.paginator.num_pages }}.
+            </span>
+         
+            {% if admins.has_next %}
+              <div style="display: inline;" class="m-3">
+                <a class="mx-3" href="?page={{ admins.next_page_number }}">next</a>
+                <a href="?page={{ admins.paginator.num_pages }}">last &raquo;</a>
+              </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+</div>
+
 {% endblock %}

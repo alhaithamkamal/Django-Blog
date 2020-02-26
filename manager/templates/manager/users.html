@@ -1,8 +1,11 @@
 {% extends 'users/base.html' %}
 
 {% block content %}
+{% include 'manager/nav.html' %}
 <div class="container-fluid">
- <table style="text-align : center;"   class="table table-lg table-dark">
+<div class="row">
+  <div class="col md-12 sm-12">
+  <table style="text-align : center;"   class="table  table-lg table-dark ">
   <thead>
     <tr style="text-align : center;">
       <th scope="col">ID</th>
@@ -34,15 +37,88 @@
   {% if user.profile.is_locked %}
      <td> <a class="btn btn-danger"  href="unlock/{{user.id}}"> Unlock </a></td>
   {% else %}
-     <td> <a class="btn btn-danger"  href="lock/{{user.id}}" onclick= "return confirm('are you sure ?');"> Lock </a></td>
+     <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#lockModal{{user.id}}">
+      lock
+    </button></td>
+    
   {% endif %}
- 
-    <td> <a class="btn btn-danger"  href="delete/{{user.id}}" onclick= "return confirm('are you sure ?');" >delete</a> </td>
+  <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal{{user.id}}">
+    delete
+  </button></td>
     <td> <a class="btn btn-success" href="promote/{{user.id}}">promote</a> </td>
 </tr>
 
+<!-- lock Modal -->
+<div class="modal fade" id="lockModal{{user.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Lock a user</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       are you sure you want to lock that user?
+      </div>
+      <div class="modal-footer">
+        <a  class="btn btn-secondary" data-dismiss="modal">Close</a>
+        <a  href="lock/{{user.id}}" class="btn btn-danger">Yes</a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+
+<!-- delete Modal -->
+<div class="modal fade" id="deleteModal{{user.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Delete a user</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       are you sure you want to delete that user?
+      </div>
+      <div class="modal-footer">
+        <a  class="btn btn-secondary" data-dismiss="modal">Close</a>
+        <a  href="delete/{{user.id}}" class="btn btn-danger">Yes</a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
 {% endfor %}
 </tbody>
 </table>
+</div>
+</div>
+</div>
+<div class="row " style="text-align:center" >
+    <div class="col">
+        <div class="block-27">
+           
+          {% if users.has_previous %}
+          <div   style="display: inline;" class="m-3">
+              <a class="mx-3" href="?page=1">&laquo; first</a>
+              <a href="?page={{ users.previous_page_number }}">previous</a>
+            </div>
+          {% endif %}
+            <span class="current">
+                Page {{ users.number }} of {{ users.paginator.num_pages }}.
+            </span>
+         
+            {% if users.has_next %}
+              <div style="display: inline;" class="m-3">
+                <a class="mx-3" href="?page={{ users.next_page_number }}">next</a>
+                <a href="?page={{ users.paginator.num_pages }}">last &raquo;</a>
+              </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
 </div>
 {% endblock  %}
