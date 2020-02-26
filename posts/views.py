@@ -26,7 +26,7 @@ def posts(request):
 def post_detail(request,id):
     categotries = Category.objects.all()
     tags = Tag.objects.all()[:10]
-    post = Post.objects.get(id= post_id)
+    post = Post.objects.get(id= id)
     user = request.user
     comments = Comment.objects.filter(post=post, reply=None).order_by('-id')
     if request.method == 'POST':
@@ -53,7 +53,7 @@ def post_detail(request,id):
     if request.is_ajax():
         html = render_to_string('post_detail', context, request=request)
         return JasonResponse({'form': html})
-        return render(request,'single.html',context)
+    return render(request,'single.html',context)
 
 
 def subscribe(request, cat_id):
@@ -134,6 +134,7 @@ def post_delete(request, num):
 	instance.delete()
 	return HttpResponseRedirect('/')
 
+# to create a post
 def post_create(request):
     form = PostForm()
     if request.method == 'POST':
@@ -173,3 +174,40 @@ def commentDelete (request,id):
 	comment = 	Comment.objects.get(id = id)
 	comment.delete()
 	return HttpResponseRedirect('detail')
+
+#to like the post if the user is not in like or dislike tables it will be added one like 
+#if the user in one of the tables he must pressed one more time in the same button 
+def like_post(request,id):
+	post= get_object_or_404(Post, pk=id)
+	postIsDisliked = post.dislikes.all()
+	post_isliked = post.likes.all()
+	user = request.user
+	if (user not in  post_isliked):
+		if(user not in postIsDisliked):
+			post.likes.add(user)
+			post.save()
+	else:
+		post.likes.remove(user)	
+		post.save()				
+	return HttpResponseRedirect("/posts/detail/"+id)
+
+#to dislike the post if the user is not in like or dislike tables it will be added one dislike 
+#if the user in one of the tables he must pressed one more time in the same button 
+def dislike_post(request,id):
+	post= get_object_or_404(Post, pk=id)
+	postIsDisliked = post.dislikes.all()
+	post_isliked = post.likes.all()
+	user = request.user
+	if (user not in  postIsDisliked):
+		if(user not in post_isliked):
+			post.dislikes.add(user)
+			post.save()
+	else:
+		post.dislikes.remove(user)	
+		post.save()
+	
+	total = post.dislikes.count()			
+	if(total == 10):
+		post.delete()
+		return HttpResponse("<h1> this post has been deleted </h1>")				
+	return HttpResponseRedirect("/posts/detail/"+id)

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{title}}</title>
+</head>
+<body>
+	{{obj.title}}</br>
+	{{obj.body}}</br>
+    {{obj.date_published}}</br>
+     {{obj.date_published}}</br>
+<!-- button (like & unlike) -->
+     <p>likes : {{obj.likes.count}}</p></br>
+      {%if request.user in obj.likes.all %}
+     <button value="unlikes"><a href='like_post/{{obj.id}}'>unLike</a></button>
+      {%else%}
+      <button><a href='like_post/{{obj.id}}'>Like</a></button>
+      {%endif%}
+<!-- button(dislike & undislike) -->     
+     <p>Dislikes : {{obj.dislikes.count}}</p><br>
+     {%if request.user in obj.dislikes.all %}
+     <button><a href='dislike_post/{{obj.id}}'>UnDisLike</a></button>
+      {%else%}
+      <button><a href='dislike_post/{{obj.id}}'>DisLike</a></button>
+      {%endif%}	
+    {%if obj.image %}
+    	<img src="{{obj.image_url}}"></br>
+    {%endif%}
+	
+</body>
+</html>
