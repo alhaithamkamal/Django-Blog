@@ -40,26 +40,6 @@ def post_update(request, id):
 		"pt_form" : form,}
 			
 	return render(request, 'post_form.html',context)
-	# st= Post.objects.get(id = num)
-	# if request.method == 'POST':
-	# 	form = PostForm(request.POST,instance=st)
-	# 	if form.is_valid():
-	# 		form.save()
-	# 		return HttpResponseRedirect('homepage.html')
-
-	# else:
-	# 	form = PostForm(instance=st)
-	# 	context = {'pt_form': form}
-	# 	return render(request,'post_form.html', context)
-
-
-   
-# def post_delete(request, num):
-# 	instance = Post.objects.get(id=num)
-# 	instance.delete()
-# 	messages.success(request,"deleted Successly")
-# 	# return redirect("Posts:list")
-# 	return HttpResponseRedirect('homepage.html')
 
 
 # to delete a post 
@@ -80,74 +60,43 @@ def post_create(request):
 	context= {
 	"pt_form":form,
 	}
-	return render(request,"post_form.html",context)
+	return render(request,"post_form.html",context) 
 
-# like or dislike post
- 
-# def like_post(request,id):
-# 	post= get_object_or_404(Post, pk=id)
-# 	post.likes.add(request.user)
-# 	post.save()
-# 	return HttpResponseRedirect("/posts/detail/"+id)
-
-
-# def like_post(request,id):
-# 	post= get_object_or_404(Post, pk=id)
-# 	for p in post.likes.all():
-# 		if (request.user==post.user):
-# 			post.likes.remove(post.user)
-# 			post.save()
-# 		else:
-# 			post.likes.add(request.user)
-# 			post.save()
-# 	return HttpResponseRedirect("/posts/detail/"+id)
-
-
-
-# def like_post(request,id):
-# 	post= get_object_or_404(Post, pk=id)
-# 	post_u = post.likes.all()
-# 	for p in post_u:
-# 		if (request.user in post_u):
-# 			post.likes.remove(request.user in post_u)
-# 			post.save()
-# 		else:
-# 			post.likes.add(request.user)
-# 			post.save()
-# 	return HttpResponseRedirect("/posts/detail/"+id)
-
+#to like the post if the user is not in like or dislike tables it will be added one like 
+#if the user in one of the tables he must pressed one more time in the same button 
 
 def like_post(request,id):
 	post= get_object_or_404(Post, pk=id)
-	post_u = post.likes.all()
-	post_d = post.dislikes.all()
-	for p in post_d:
-		if (request.user not in post_d):
-			for p in post_u:
-				if (request.user in  post_u):
-					post.likes.remove(request.user in post_u)
-					post.save()
-				else:
-					post.likes.add(request.user)
-					post.save()
+	postIsDisliked = post.dislikes.all()
+	post_isliked = post.likes.all()
+	user = request.user
+	if (user not in  post_isliked):
+		if(user not in postIsDisliked):
+			post.likes.add(user)
+			post.save()
+	else:
+		post.likes.remove(user)	
+		post.save()				
 	return HttpResponseRedirect("/posts/detail/"+id)
+
+#to dislike the post if the user is not in like or dislike tables it will be added one dislike 
+#if the user in one of the tables he must pressed one more time in the same button 
 
 def dislike_post(request,id):
 	post= get_object_or_404(Post, pk=id)
-	post_d = post.dislikes.all()
-	post_u = post.likes.all()
-	for pt in post_u:
-		if (request.user not in  post_u):
-			for p in post_d:
-				if (request.user in post_d):
-					po=request.user in post_d
-					post.dislikes.remove(po)
-					post.save()
-				else:
-					post.dislikes.add(request.user)
-					post.save()
+	postIsDisliked = post.dislikes.all()
+	post_isliked = post.likes.all()
+	user = request.user
+	if (user not in  postIsDisliked):
+		if(user not in post_isliked):
+			post.dislikes.add(user)
+			post.save()
+	else:
+		post.dislikes.remove(user)	
+		post.save()
+	
 	total = post.dislikes.count()			
-	if(total == 2):
+	if(total == 10):
 		post.delete()
 		return HttpResponse("<h1> this post has been deleted </h1>")				
 	return HttpResponseRedirect("/posts/detail/"+id)

@@ -8,7 +8,7 @@ from django.urls import reverse
 class Post(models.Model):
     STATUS_CHOICIS=(
         ('draft','Draft'),
-        ('puzblished','published'),    
+        ('published','published'),    
         )
     title = models.CharField(max_length=50 , null= False , blank = False)
     body = models.TextField()
@@ -21,8 +21,8 @@ class Post(models.Model):
     slug_url = models.SlugField(blank=True,unique=True)
     #comment = models.ManyToManyField
     status=models.CharField(max_length=10,choices=STATUS_CHOICIS,default='published')
-    likes = models.ManyToManyField(User,related_name="post_likes",blank=True)
-    dislikes= models.ManyToManyField(User,related_name="post_dislikes",blank=True)
+    likes = models.ManyToManyField(User,related_name="post_likes",blank=True,null=True)
+    dislikes= models.ManyToManyField(User,related_name="post_dislikes",blank=True,null=True)
     class Meta:
         ordering = ('-date_published',)
     def __str__(self):
