@@ -8,7 +8,7 @@ from django.urls import reverse
 class Post(models.Model):
     STATUS_CHOICIS=(
         ('draft','Draft'),
-        ('published','published'),    
+        ('puzblished','published'),    
         )
     title = models.CharField(max_length=50 , null= False , blank = False)
     body = models.TextField()
@@ -22,6 +22,7 @@ class Post(models.Model):
     #comment = models.ManyToManyField
     status=models.CharField(max_length=10,choices=STATUS_CHOICIS,default='published')
     likes = models.ManyToManyField(User,related_name="post_likes",blank=True)
+    dislikes= models.ManyToManyField(User,related_name="post_dislikes",blank=True)
     class Meta:
         ordering = ('-date_published',)
     def __str__(self):
@@ -29,9 +30,10 @@ class Post(models.Model):
 
     # def get_absolute_url(self):
     #     return reverse("list", kwargs={"id": self.id})    
-    
+
     def get_absolute_url(self):
         return reverse('posts:post_detail', args=[self.id])
+
 
 #to show the image in the post 
     @property

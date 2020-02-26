@@ -82,13 +82,74 @@ def post_create(request):
 	}
 	return render(request,"post_form.html",context)
 
-# like or dislike post 
-def like_post(request):
-	post= get_object_or_404(Post, id=request.POST.get('post_id'))
-	post.likes.add(request.user)
-	return HttpResponseRedirect(post.get_absolute_url())
+# like or dislike post
+ 
+# def like_post(request,id):
+# 	post= get_object_or_404(Post, pk=id)
+# 	post.likes.add(request.user)
+# 	post.save()
+# 	return HttpResponseRedirect("/posts/detail/"+id)
+
+
+# def like_post(request,id):
+# 	post= get_object_or_404(Post, pk=id)
+# 	for p in post.likes.all():
+# 		if (request.user==post.user):
+# 			post.likes.remove(post.user)
+# 			post.save()
+# 		else:
+# 			post.likes.add(request.user)
+# 			post.save()
+# 	return HttpResponseRedirect("/posts/detail/"+id)
 
 
 
-	
-	
+# def like_post(request,id):
+# 	post= get_object_or_404(Post, pk=id)
+# 	post_u = post.likes.all()
+# 	for p in post_u:
+# 		if (request.user in post_u):
+# 			post.likes.remove(request.user in post_u)
+# 			post.save()
+# 		else:
+# 			post.likes.add(request.user)
+# 			post.save()
+# 	return HttpResponseRedirect("/posts/detail/"+id)
+
+
+def like_post(request,id):
+	post= get_object_or_404(Post, pk=id)
+	post_u = post.likes.all()
+	post_d = post.dislikes.all()
+	for p in post_d:
+		if (request.user not in post_d):
+			for p in post_u:
+				if (request.user in  post_u):
+					post.likes.remove(request.user in post_u)
+					post.save()
+				else:
+					post.likes.add(request.user)
+					post.save()
+	return HttpResponseRedirect("/posts/detail/"+id)
+
+def dislike_post(request,id):
+	post= get_object_or_404(Post, pk=id)
+	post_d = post.dislikes.all()
+	post_u = post.likes.all()
+	for pt in post_u:
+		if (request.user not in  post_u):
+			for p in post_d:
+				if (request.user in post_d):
+					po=request.user in post_d
+					post.dislikes.remove(po)
+					post.save()
+				else:
+					post.dislikes.add(request.user)
+					post.save()
+	total = post.dislikes.count()			
+	if(total == 2):
+		post.delete()
+		return HttpResponse("<h1> this post has been deleted </h1>")				
+	return HttpResponseRedirect("/posts/detail/"+id)
+		
+				
