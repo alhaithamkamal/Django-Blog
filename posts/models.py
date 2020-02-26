@@ -54,5 +54,15 @@ class Comment(models.Model):
 
 	def __str__(self):
 		return  '{} commented on {}.'.format(str(self.user.username), self.post.title)
+
+
+
+	def get_delete_url(self):
+		return reverse('posts:delete', args=[self.id])
+		
+
+
+
+						
 					
 	

@@ -1,19 +1,4 @@
-{% extends 'base.html' %}
 
-{% block title%}{{post.title}}|{{ block.super }}{% endblock%}
-{% block content%}
-
-		<h3>{{post.title}}</h3>
-		<small>post created by : {{post.user}}</small>
-		<hr>
-		<p>{{post.body}}</p>
-	</div>
-<br><br>
-<hr>
-
-
-
-	<div class="main-comment-section">
 		<div class="container-fluid mt-2">
 			<div class="form-group row">
                <form method="post" class="comment-form" action=".">
@@ -24,7 +9,6 @@
 			        {% else %}
 				        <input type="submit" value="submit"  class="btn btn-oulined-success" disabled>
 			        {% endif %}	
-			        {% if request.user == comment.user %}<a href="{{child_comment.get_delete_url"> Delete{% endif%}
 
 		        </form>
 
