@@ -1,0 +1,16 @@
+
+
+<div class='col-sm-6 col-sm-offset-3'>
+	<h1>Confirm Delete</h1>
+<form method="post" class="reply-form" action=".">
+			{% csrf_token%}
+
+			<p>Are you want to delete: "{{object}}" ?</p>
+			<input type="hidden" name="comment_id" value="{{ comment.id}}">
+			
+			<a href='{{object.get_absolute_url}}' class="btn btn-default">Cancel</a>
+			
+
+		</form>
+	
+</div>

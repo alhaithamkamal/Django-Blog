@@ -1,0 +1,22 @@
+
+{% extends 'base.html' %}
+{% block title%}Welcom to {{ block.super }}{% endblock%}
+
+{% block content %}
+		<div class="row">
+
+{% for p in post %}
+<div class="col-md-6">
+	<div class="img-thumbnail">
+		<a href="{{ p.get_absoulte_url }}"> {{p.title}}</a><small style="float:right"> {{p.created}} </small><br>
+		Author:{{p.user}}<br>
+		{{p.body}}
+
+</div>
+<br>
+</div>
+{% endfor %}
+</div>
+{% endblock %}
+
+

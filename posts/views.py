@@ -3,10 +3,10 @@ from django.http import  HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect
-from .models import Post, Tag, Category
+from .models import Post, Tag, Category, Comment
 from django.db.models import Q
 from django.shortcuts import render ,get_object_or_404
-from posts.form import PostForm
+from posts.forms import PostForm, CommentForm
 from users.util_funcs import delete_profile_pic
 from users.logger import log
 
@@ -23,13 +23,38 @@ def posts(request):
     context = {'page_obj': page_obj, 'categories': categotries,'tags': tags, 'user': user}
     return render(request, 'home.html', context)
 
-def post_detail(request , post_id):
+def post_detail(request,id):
     categotries = Category.objects.all()
     tags = Tag.objects.all()[:10]
-    user = request.user
     post = Post.objects.get(id= post_id)
-    context = {'post': post, 'categories': categotries,'tags': tags, 'user': user}
-    return render(request,'single.html', context)
+    user = request.user
+    comments = Comment.objects.filter(post=post, reply=None).order_by('-id')
+    if request.method == 'POST':
+        comment_form = CommentForm(request.POST or None)
+        if comment_form.is_valid():
+            content = request.POST.get('content')
+            reply_id = request.POST.get('comment_id')
+            comment_qs = None
+            if reply_id:
+                comment_qs = Comment.objects.get(id=reply_id)	
+            comment = Comment.objects.create(post=post, user=request.user, content=content, reply=comment_qs)
+            comment.save()
+			#return HttpResponseRedirect(post.get_absolute_url())
+    else:
+        comment_form= CommentForm()		
+    context = {
+        'post' : post,
+        'comments' : comments,
+        'comment_form' : comment_form,
+        'categories': categotries,
+        'tags': tags,
+        'user': user
+    }
+    if request.is_ajax():
+        html = render_to_string('post_detail', context, request=request)
+        return JasonResponse({'form': html})
+        return render(request,'single.html',context)
+
 
 def subscribe(request, cat_id):
     user = request.user
@@ -107,7 +132,6 @@ def post_update(request, id):
 def post_delete(request, num):
 	instance = Post.objects.get(id=num)
 	instance.delete()
-	# return redirect("Posts:list")
 	return HttpResponseRedirect('/')
 
 def post_create(request):
@@ -133,3 +157,19 @@ def getTags(string):
             Tag.objects.create(name = tag)
     return tag_list 
 
+def commentEdit(request, id):
+    post = get_object_or_404(Post,)
+    comment = Comment.objects.get(id=id)
+    if request.method == 'POST':
+        form = CommentForm(request.POST, instance=comment.user)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('deletecomment')
+    else:
+    	form = CommentForm(instance = comment)
+    return render (request, 'post_detail.html',{'form':form})       
+
+def commentDelete (request,id):
+	comment = 	Comment.objects.get(id = id)
+	comment.delete()
+	return HttpResponseRedirect('detail')
