@@ -16,9 +16,9 @@
           <i class="zmdi zmdi-font"></i>
         </span>
      {% for field in edit_form %}
-          <div class="container" style="text-align: left;">
+          <div class="container wrap-input100 validate-input" style="text-align: left;">
                <label for="{{ field.id_for_label }}" class="label">{{ field.label }}</label>
-              <div class="mb-4">
+              <div class="mb-1">
                 {{field}}
               </div>  
           </div>  
@@ -40,7 +40,9 @@
           <button class="btn-lg btn-primary" type="submit">Save</button>
     </div>            
 </form>
-
+<div class=" mx-auto " style="text-align: center;">
+  <a href="/users/profile" class="btn  px-5 "> <img width="110" height="100" src="{% static 'users/imgs/back.png' %}"alt="back button image" srcset=""> </a>
+</div>
  <div class="m-5">
     <a class="btn-lg btn-primary" href={% url 'change_password' %}>change password</a>
 </div>

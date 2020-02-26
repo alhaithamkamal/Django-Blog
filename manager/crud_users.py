@@ -4,6 +4,7 @@ from users.models import Profile
 from django.contrib.auth.models import User
 from users.logger import log
 from users.util_funcs import *
+from django.core.paginator import Paginator
 import os
 
 """ the following functions are to control users or admins 
@@ -17,7 +18,10 @@ def manager_show_normal_users(request):
 
     if(is_authorized_admin(request)):   
         users = User.objects.filter(is_staff__exact= False)
-        return render(request , "manager/users.html",{"users":users})
+        paginator = Paginator(users, 5)
+        page_number = request.GET.get('page')
+        page_users = paginator.get_page(page_number)
+        return render(request , "manager/users.html",{"users":page_users})
     else:
         return HttpResponseRedirect("/")    
 
@@ -28,7 +32,10 @@ def manager_show_admins(request):
 
     if(is_authorized_admin(request)):     
         admins = User.objects.filter(is_staff__exact= True)
-        context = {"admins":admins ,"superuser":request.user.is_superuser}
+        paginator = Paginator(admins, 5)
+        page_number = request.GET.get('page')
+        page_admins = paginator.get_page(page_number)
+        context = {"admins":page_admins ,"superuser":request.user.is_superuser}
         return render(request , "manager/admins.html",context)    
     else:
         return HttpResponseRedirect("/")   

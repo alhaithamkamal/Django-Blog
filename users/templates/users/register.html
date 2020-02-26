@@ -1,18 +1,8 @@
 {% extends 'users/base.html' %} 
 {% block content %}
 {% load static %}
-<script>
-  window.addEventListener("pageshow", function(event) {
-    var historyTraversal =
-      event.persisted ||
-      (typeof window.performance != "undefined" &&
-        window.performance.navigation.type === 2);
-    if (historyTraversal) {
-      window.location.reload();
-    }
-  });
-</script>
-<link rel="stylesheet" href="{% static 'users/forms.css' %}">
+{% include "users/refresh.html" %}
+
 <div class="limiter">
   <div class="container-login100">
     <div class="wrap-login200" style="text-align: center;">
@@ -75,6 +65,9 @@
 			</a>
 		</div>
     </form>
+    <div class=" mx-auto " style="text-align: center;">
+  <a href="/users/login" class="btn  px-5 "> <img width="110" height="100" src="{% static 'users/imgs/back.png' %}"alt="back button image" srcset=""> </a>
+</div>
    </div>
   </div>
 </div>
