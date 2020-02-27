@@ -1,6 +1,6 @@
 from .crud_users import *
-from posts.models import Post, Tag, Category, Comment
-from posts.forms import PostForm, CommentForm
+from posts.models import Post, Tag, Category, Comment, Profanity
+from posts.forms import PostForm, CommentForm, ProfanityForm, CategoryForm
 
 
 """ the following views are to control users and admins 
@@ -45,11 +45,44 @@ def delete_admin(request , id):
 """ statrrt of posts control views """ 
 def posts(request):
     posts = Post.objects.all()
-    context = {'posts': posts}
-    return render(request, 'posts.html', context)
+    categories = Category.objects.all()
+    profane_words = Profanity.objects.all()
+    context = {'posts': posts, 'categories': categories, 'profane_words': profane_words}
+    return render(request, 'manager/landing.html', context)
 
 def post_delete(request, post_id):
 	post = Post.objects.get(id=post_id)
 	post.delete()
 	return HttpResponseRedirect('/manager/')
 
+def add_category(request):
+    form = CategoryForm()
+    if request.method == 'POST':
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            log("form is valid")
+            return HttpResponseRedirect('/manager')
+    else:
+        context = {"pt_form": form}
+        return render(request, "manager/categoryform.html", context)
+
+def delete_category(request, cat_id):
+    category = Category.objects.get(id=cat_id)
+    category.delete()
+    return HttpResponseRedirect('/manager')
+
+def add_profane_word(request):
+    form = ProfanityForm()
+    if request.method == 'POST':
+        form = ProfanityForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/manager')
+    else:
+        context = {"pt_form": form}
+        return render(request,"manager/form.html",context)
+def delete_profane_word(request, id):
+    profane_word = Profanity.objects.get(id=id)
+    profane_word.delete()
+    return HttpResponseRedirect('/manager')
