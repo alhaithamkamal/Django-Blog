@@ -84,7 +84,6 @@ class Profanity(models.Model):
 
     def __str__(self):
         return self.profane_word
-            
 
 #delete img from file media within the post 
 @receiver(post_delete,sender = Post) 

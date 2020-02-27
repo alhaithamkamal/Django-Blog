@@ -1,4 +1,11 @@
-{% extends 'users/base.html' %} {% block content %}
+
+
+{% block main_block %}
+ 
+
+
+
+
 <div class="container mt-5">
     <div class="container mb-5">
         {%if userprofile.profile_pic%}
@@ -8,7 +15,7 @@
      {%endif%}
     </div>
     <div class="container mb-5">
-        <h3 class="mb-3">Full Name : {{user.first_name}} {{user.last_name}}</h3>
+        <h3 class="mb-3"><span style="color: #00bfff">Full Name : {{user.first_name}} {{user.last_name}}</span></h3>
    
         <h3 class="mb-3">Email : {{user.email}}</h3>
 
@@ -24,4 +31,12 @@
 
 </div>
 
+<br>
+<br>
+
+
 {% endblock %}
+
+
+
+  

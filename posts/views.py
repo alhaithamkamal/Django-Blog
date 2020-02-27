@@ -1,7 +1,7 @@
 from django.http import  HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from .models import Post, Tag, Category, Comment
+from .models import Post, Tag, Category, Comment, Profanity
 from django.db.models import Q
 from django.shortcuts import render ,get_object_or_404
 from posts.forms import PostForm, CommentForm
@@ -27,14 +27,19 @@ def post_detail(request,id):
     post = Post.objects.get(id= id)
     user = request.user
     comments = Comment.objects.filter(post=post, reply=None).order_by('-id')
+    profane_words = Profanity.objects.all()
     if request.method == 'POST':
         comment_form = CommentForm(request.POST or None)
         if comment_form.is_valid():
             content = request.POST.get('content')
+            for profane_word in profane_words:
+                if str(profane_word) in content:
+                    user.profile.undesired_words_count += 1
+                    user.profile.save()
             reply_id = request.POST.get('comment_id')
             comment_qs = None
             if reply_id:
-                comment_qs = Comment.objects.get(id=reply_id)	
+                comment_qs = Comment.objects.get(id=reply_id)
             Comment.objects.create(post=post, user=request.user, content=content, reply=comment_qs)
             comment_form = CommentForm()
 			#return HttpResponseRedirect(post.get_absolute_url())
