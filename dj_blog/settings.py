@@ -135,5 +135,3 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'dproject.os40@gmail.com'
 EMAIL_HOST_PASSWORD = 'cipher111'
 EMAIL_PORT = 587
-
-
