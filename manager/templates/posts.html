@@ -1,0 +1,47 @@
+{% extends 'users/base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+ <table style="text-align : center;"   class="table table-lg table-dark">
+  <thead>
+    <tr style="text-align : center;">
+      <th scope="col">ID</th>
+      <th scope="col">Post Title</th>
+      <th scope="col">Post body</th>
+      <th scope="col">Date</th>
+      <th scope="col">Likes</th>
+      <th scope="col">Dislikes</th>
+      <th scope="col">Comments</th>
+    </tr>
+  </thead>
+  <tbody>
+{% for post in posts %}
+ 
+  {% if user.is_staff %}
+        <tr class="bg-danger" >
+  {% else %}
+        <tr class="bg-primary">
+  {% endif %}
+  <td >{{user.id}}</td>
+  <td >{{user.first_name}}</td>
+  <td >{{user.last_name}}</td>
+  <td>{{user.username}}</td>
+  <td >{{user.last_login}}</td>
+  <td >{{user.profile.undesired_words_count}}</td>
+  <td >{{user.profile.is_locked}}</td>
+  <td> <a class="btn btn-warning" href="show/{{user.id}}">show</a></td> 
+  {% if user.profile.is_locked %}
+     <td> <a class="btn btn-danger"  href="unlock/{{user.id}}"> Unlock </a></td>
+  {% else %}
+     <td> <a class="btn btn-danger"  href="lock/{{user.id}}" onclick= "return confirm('are you sure ?');"> Lock </a></td>
+  {% endif %}
+ 
+    <td> <a class="btn btn-danger"  href="delete/{{user.id}}" onclick= "return confirm('are you sure ?');" >delete</a> </td>
+    <td> <a class="btn btn-success" href="promote/{{user.id}}">promote</a> </td>
+</tr>
+
+{% endfor %}
+</tbody>
+</table>
+</div>
+{% endblock  %}

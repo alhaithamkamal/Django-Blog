@@ -1,4 +1,7 @@
 from .crud_users import *
+from posts.models import Post, Tag, Category, Comment
+from posts.forms import PostForm, CommentForm
+
 
 """ the following views are to control users and admins 
     all the functions called here are implemented in crud_users.py file
@@ -38,3 +41,15 @@ def delete_admin(request , id):
     return super_delete_admin(request , id)
 
 """ end of users control views """ 
+
+""" statrrt of posts control views """ 
+def posts(request):
+    posts = Post.objects.all()
+    context = {'posts': posts}
+    return render(request, 'posts.html', context)
+
+def post_delete(request, post_id):
+	post = Post.objects.get(id=post_id)
+	post.delete()
+	return HttpResponseRedirect('/manager/')
+

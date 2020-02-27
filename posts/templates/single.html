@@ -51,7 +51,7 @@
 			<div class="comment-body">
 			<h3>{{comment.user.first_name}} {{comment.user.last_name}}</h3>
 			<div class="meta">{{comment.date}}</div>
-			<p>{{comment.content}}</p>
+			<p>{{comment.filtered_content}}</p>
 			{% if request.user.is_authenticated %}
 			<form method="post" class="reply-form" action="">
 				{% csrf_token%}

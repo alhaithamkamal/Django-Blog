@@ -35,8 +35,8 @@ def post_detail(request,id):
             comment_qs = None
             if reply_id:
                 comment_qs = Comment.objects.get(id=reply_id)	
-            comment = Comment.objects.create(post=post, user=request.user, content=content, reply=comment_qs)
-            comment.save()
+            Comment.objects.create(post=post, user=request.user, content=content, reply=comment_qs)
+            comment_form = CommentForm()
 			#return HttpResponseRedirect(post.get_absolute_url())
     else:
         comment_form= CommentForm()		
@@ -154,7 +154,6 @@ def getTags(string):
     return tag_list 
 
 def commentEdit(request, id):
-    post = get_object_or_404(Post,)
     comment = Comment.objects.get(id=id)
     if request.method == 'POST':
         form = CommentForm(request.POST, instance=comment.user)
