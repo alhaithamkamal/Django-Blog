@@ -1,8 +1,11 @@
 {% extends 'users/base.html' %}
 
 {% block content %}
+{% include "manager/nav.html" %}
 <h1>posts</h1>
-<a href="/createpost">Create</a>
+<div style="text-align:left; " class="ml-3">
+<a class="btn btn-primary my-3" href="/createpost">Create</a>
+</div>
 <div class="container-fluid">
  <table style="text-align : center;"   class="table table-lg table-dark">
   <thead>
@@ -39,7 +42,9 @@
 </table>
 </div>
 <h1>Categories</h1>
-<a href="addcategory">Create</a>
+<div style="text-align:left; " class="ml-3">
+<a class="btn btn-primary my-3" href="addcategory">Create</a>
+</div>
 <div class="container-fluid">
  <table style="text-align : center;"   class="table table-lg table-dark">
   <thead>
@@ -65,7 +70,9 @@
 </table>
 </div>
 <h1>Profane Words</h1>
-<a href="addprofaneword">Add</a>
+<div style="text-align:left; " class="ml-3">
+<a class="btn btn-primary my-3 "  href="addprofaneword">Add</a>
+</div>
 <div class="container-fluid">
  <table style="text-align : center;"   class="table table-lg table-dark">
   <thead>

@@ -14,6 +14,9 @@
             {% endif %}
             <li class="colorlib-active"><a href="/">Home</a></li>
             {% if request.user.is_authenticated %}
+                <li><a href="/users/profile">Profile</a></li>
+            {%endif%}
+            {% if request.user.is_authenticated %}
             <li><a href="/users/logout">Logout</a></li>
             
             {% endif %}
