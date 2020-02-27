@@ -51,7 +51,7 @@
 			<div class="comment-body">
 			<h3>{{comment.user.first_name}} {{comment.user.last_name}}</h3>
 			<div class="meta">{{comment.date}}</div>
-			<p>{{comment.content}}</p>
+			<p>{{comment.filtered_content}}</p>
 			{% if request.user.is_authenticated %}
 			<form method="post" class="reply-form" action="">
 				{% csrf_token%}
@@ -73,7 +73,7 @@
 				<div class="comment-body">
 					<h3>{{reply.user.first_name}} {{reply.user.last_name}}</h3>
 					<div class="meta">{{reply.date}}</div>
-					<p>{{reply.content}}</p>
+					<p>{{reply.filtered_content}}</p>
 					{% if request.user == reply.user %}
 					<a class="btn btn-danger" href="/deletecomment/{{post.id}}/{{reply.id}}"> Delete </a>
 					{% endif%}

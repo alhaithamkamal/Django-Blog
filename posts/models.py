@@ -10,7 +10,7 @@ from django.template.defaultfilters import slugify
 
 class Category(models.Model):
     name = models.CharField(max_length=30)
-    user = models.ManyToManyField(User, blank=True, related_name='categories')
+    user = models.ManyToManyField(User, blank=True, null=True, related_name='categories')
 
     def __str__ (self):
         return self.name
@@ -70,12 +70,20 @@ class Comment(models.Model):
 
     def __str__(self):
         return  '{} commented on {}.'.format(str(self.user.username), self.post.title)
-
-
-
     def get_delete_url(self):
         return reverse('posts:delete', args=[self.id])
-            
+
+    def filtered_content(self):
+        profane_words = Profanity.objects.all()
+        for profane_word in profane_words:
+            self.content = self.content.replace(str(profane_word), '*' * len(str(profane_word)))
+        return self.content
+
+class Profanity(models.Model):
+    profane_word = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.profane_word
 
 #delete img from file media within the post 
 @receiver(post_delete,sender = Post) 

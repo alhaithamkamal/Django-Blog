@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from .models import Post, Tag, Category, Comment
+from .models import Post, Tag, Category, Comment, Profanity
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from posts.forms import PostForm, CommentForm
@@ -14,14 +14,16 @@ from django.core.mail import send_mail
 
 def posts(request):
     posts = Post.objects.all()
+    popular_posts = Post.objects.order_by('-likes')[:5]
     paginator = Paginator(posts, 5)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     categotries = Category.objects.all()
     tags = Tag.objects.all()[:10]
     user = request.user
-    context = {'page_obj': page_obj,
-               'categories': categotries, 'tags': tags, 'user': user}
+
+    context = {'page_obj': page_obj, 'categories': categotries,
+               'tags': tags, 'user': user, 'popular_posts': popular_posts}
     return render(request, 'home.html', context)
 
 
@@ -31,18 +33,24 @@ def post_detail(request, id):
     post = Post.objects.get(id=id)
     user = request.user
     comments = Comment.objects.filter(post=post, reply=None).order_by('-id')
+    profane_words = Profanity.objects.all()
     if request.method == 'POST':
         comment_form = CommentForm(request.POST or None)
         if comment_form.is_valid():
             content = request.POST.get('content')
+            for profane_word in profane_words:
+                if str(profane_word) in content:
+                    user.profile.undesired_words_count += 1
+                    user.profile.save()
             reply_id = request.POST.get('comment_id')
             comment_qs = None
             if reply_id:
                 comment_qs = Comment.objects.get(id=reply_id)
-            comment = Comment.objects.create(
+
+            Comment.objects.create(
                 post=post, user=request.user, content=content, reply=comment_qs)
-            comment.save()
-            # return HttpResponseRedirect(post.get_absolute_url())
+            comment_form = CommentForm()
+
     else:
         comment_form = CommentForm()
     context = {
@@ -179,7 +187,6 @@ def getTags(string):
 
 
 def commentEdit(request, id):
-    post = get_object_or_404(Post,)
     comment = Comment.objects.get(id=id)
     if request.method == 'POST':
         form = CommentForm(request.POST, instance=comment.user)

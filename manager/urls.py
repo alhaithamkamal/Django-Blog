@@ -1,11 +1,11 @@
 from django.urls import path
 from . import views
 
-
 """the part of urls begins with users/ or admins/ is to handle all crud operations on users and admins
     @ author: AbdAllah Zidan """
 
 urlpatterns = [
+
     path("users/", views.users, name="users"),
     path("admins/", views.admins, name="admins"),
     path("users/delete/<int:id>/", views.delete, name="delete"),
@@ -21,5 +21,11 @@ urlpatterns = [
     path("admins/promote/<int:id>",
          views.promote_admin_to_super, name="promote_admin"),
     path("users/sorted/<int:num>", views.sort,
-         name="sort")
+         name="sort"),
+
+    path("", views.posts),
+    path("addcategory", views.add_category),
+    path("delcategory/<cat_id>", views.delete_category),
+    path("addprofaneword", views.add_profane_word),
+    path("delprofaneword/<id>", views.delete_profane_word),
 ]
