@@ -3,7 +3,7 @@
     <nav id="colorlib-main-menu" role="navigation">
         <ul>
             {% if request.user.is_staff %}
-            <li><a href="/manager/users">Manage Blog</a></li>
+            <li><a href="/manager">Manage Blog</a></li>
             {% endif %}
             {% if not request.user.is_authenticated %}
             <li><a href="/users/login">Login</a></li>
