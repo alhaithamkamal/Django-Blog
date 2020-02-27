@@ -34,6 +34,7 @@ def register(request):
                     profile.profile_pic = file  # add the provided pic to that user profile
                 profile.bio = request.POST["bio"]
                 profile.save()  # save the updates to user profile
+                log(profile.profile_pic.url)
                 log("created a new user successfully with username: " +
                     user.username)  # for debugging purposes
                 user = authenticate(
@@ -42,7 +43,7 @@ def register(request):
                     login(request, user)
                     try:
                         send_mail('Welcome to our blog', 'Django Blog team welcomes you to our blog .',
-                                  'DjangoTeam@django.com', [user.email], fail_silently=False,)
+                                  'dproject.os40@gmail.com', [user.email], fail_silently=False,)
                     except Exception as ex:
                         log("couldn't send email message"+str(ex))
 

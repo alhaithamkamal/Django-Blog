@@ -12,8 +12,8 @@
       <th scope="col">First Name</th>
       <th scope="col">Last Name</th>
       <th scope="col">username</th>
-      <th scope="col">Last login</th>
-      <th scope="col">Undesired words count</th>
+      <th scope="col"> <a style="color:white;" href="/manager/users/sorted/1">Last login</a> </th>
+      <th scope="col"> <a style="color:white;" href="/manager/users/sorted/2">Undesired words count</a></th>
       <th scope="col">Is Locked</th>
       <th scope"col" colspan=3 > Actions</th>
     </tr>
@@ -48,49 +48,7 @@
     <td> <a class="btn btn-success" href="promote/{{user.id}}">promote</a> </td>
 </tr>
 
-<!-- lock Modal -->
-<div class="modal fade" id="lockModal{{user.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Lock a user</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-       are you sure you want to lock that user?
-      </div>
-      <div class="modal-footer">
-        <a  class="btn btn-secondary" data-dismiss="modal">Close</a>
-        <a  href="lock/{{user.id}}" class="btn btn-danger">Yes</a>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Modal -->
-
-<!-- delete Modal -->
-<div class="modal fade" id="deleteModal{{user.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Delete a user</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-       are you sure you want to delete that user?
-      </div>
-      <div class="modal-footer">
-        <a  class="btn btn-secondary" data-dismiss="modal">Close</a>
-        <a  href="delete/{{user.id}}" class="btn btn-danger">Yes</a>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Modal -->
+{% include "manager/modals.html" %}
 {% endfor %}
 </tbody>
 </table>
