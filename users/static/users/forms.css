@@ -4,18 +4,30 @@
 #id_profile_pic {
   font-size: 1.15rem;
 }
-.container .btn-lg {
+.container .btn-lg,
+.btn-lg {
+  font-family: Tahoma;
+  font-size: 1.2rem;
+  color: white;
+  border-radius: 20px;
   padding: 10px 100px;
-  background: rgb(135, 3, 47);
-  background: linear-gradient(
-    90deg,
-    rgba(135, 3, 47, 1) 0%,
-    rgba(2, 0, 36, 1) 14%,
-    rgba(4, 71, 84, 1) 81%,
-    rgba(161, 6, 57, 1) 100%
-  );
+}
+
+.container .btn-lg:hover,
+.btn-lg:hover {
+  cursor: hand;
+  border-color: #2196f3;
+  border-width: 3px;
+  border-radius: 20px;
+  background-color: #fff;
+  color: #2196f3;
+  font-weight: bold;
+}
+
+.container .btn-lg:pressed,
+.btn-lg:hover {
+  rotate: 12;
 }
 .btn-lg {
-  padding: 10px 50px;
-  background-color: rgb(194, 97, 7);
+  padding: 15px 70px;
 }
