@@ -24,14 +24,14 @@
 	<br>
 {% if  request.user.is_authenticated %}
 	{% if not request.user in post.likes.all %}
-	<a style="margin-right:10px;" href="/like_post/{{post.id}}">Like </a>
+	<a id="like-btn" style="margin-right:10px;" href="">Like </a>
 	{% else %}
-	<a style="margin-right:10px;" href="/like_post/{{post.id}}">UnLike </a>
+	<a id="like-btn" style="margin-right:10px;" href="">UnLike </a>
 	{% endif %}
 	{% if not request.user in post.dislikes.all %}
-	<a  href="/dislike_post/{{post.id}}">Dislike </a>
+	<a id="dislike-btn" href="">Dislike </a>
 	{% else %}
-	<a   href="/dislike_post/{{post.id}}">Undislike </a>
+	<a id="#dislike-btn"  href="">Undislike </a>
 	{% endif %}
 {% endif %}
 <div class="pt-5 mt-5">
@@ -99,4 +99,36 @@
 		{% endif %}	
 	</div>
 </div><!-- END-->
+<script>
+	let likeBtn = document.querySelector("#like-btn");
+	let dislikeBtn = document.querySelector("#dislike-btn");
+	let req = new XMLHttpRequest();
+	likeBtn.addEventListener("click",(e)=>{
+		e.preventDefault();
+		req.open("GET","/like_post/{{post.id}}",true);
+		req.send();
+		req.onload=(ev)=>{
+			if(likeBtn.innerText == "Like"){
+				likeBtn.innerHTML= "Unlike";
+			}else{
+				likeBtn.innerHTML= "Like";
+			}
+			
+		}
+	});
+	dislikeBtn.addEventListener("click",(e)=>{
+		e.preventDefault();
+		req.open("GET","/dislike_post/{{post.id}}",true);
+		req.send();
+		req.onload=(e)=>{
+			if(dislikeBtn.innerText == "Dislike"){
+				dislikeBtn.innerHTML= "Undislike";
+			}else{
+				dislikeBtn.innerHTML= "Dislike";
+			}
+		}
+	})
+	
+	console.log(likeBtn);
+</script>
 {% endblock %}
