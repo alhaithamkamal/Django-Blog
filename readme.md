@@ -6,10 +6,10 @@
 
 ### Contributers
 
-#####1. Al Haitham Kamal [categories , tags ] + admin app
-#####2. Hagar Abdou [posts , likes , dislikes] + admin app
-#####3. Jihad Samir [comments , replies] + admin app
-#####4. Abd Allah Zidan [users app ] + admin app
+##### 1. Al Haitham Kamal [categories , tags ] + admin app
+##### 2. Hagar Abdou [posts , likes , dislikes] + admin app
+##### 3. Jihad Samir [comments , replies] + admin app
+##### 4. Abd Allah Zidan [users app ] + admin app
 
 ### what can users do
 
