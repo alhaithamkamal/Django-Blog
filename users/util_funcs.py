@@ -40,7 +40,10 @@ def demote_user(user):
 def delete_profile_pic(profile_pic):
     try:
         pic_url = BASE_DIR+profile_pic.url
-        os.remove(pic_url)
-        log("deleted profile pic ")
+        if(pic_url.endswith("defaultImage.png")):
+            pass
+        else:
+            os.remove(pic_url)
+            log("deleted profile pic ")
     except Exception as ex:
         log("no pic"+str(ex))

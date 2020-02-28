@@ -33,9 +33,9 @@
   <td >{{user.last_login}}</td>
   <td >{{user.profile.undesired_words_count}}</td>
   <td >{{user.profile.is_locked}}</td>
-  <td> <a class="btn btn-warning" style="background-color:#ffc507" href="show/{{user.id}}">show</a></td> 
+  <td> <a class="btn btn-warning" style="background-color:#ffc507" href="/manager/users/show/{{user.id}}">show</a></td> 
   {% if user.profile.is_locked %}
-     <td> <a class="btn btn-danger" style="background-color:#ffc507"  href="unlock/{{user.id}}"> Unlock </a></td>
+     <td> <a class="btn btn-danger" style="background-color:#ffc507"  href="/manager/users/unlock/{{user.id}}"> Unlock </a></td>
   {% else %}
      <td><button type="button" class="btn btn-dark" style="background-color:#47464d" data-toggle="modal" data-target="#lockModal{{user.id}}">
       lock
@@ -45,7 +45,7 @@
   <td><button type="button" class="btn btn-dark" style="background-color:#47464d" data-toggle="modal" data-target="#deleteModal{{user.id}}">
     delete
   </button></td>
-    <td> <a class="btn btn-warning" style="background-color:#ffc507" href="promote/{{user.id}}">promote</a> </td>
+    <td> <a class="btn btn-warning" style="background-color:#ffc507" href="/manager/users/promote/{{user.id}}">promote</a> </td>
 </tr>
 
 {% include "manager/modals.html" %}
