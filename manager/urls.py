@@ -23,9 +23,10 @@ urlpatterns = [
     path("users/sorted/<int:num>", views.sort,
          name="sort"),
 
-    path("", views.posts),
+    path("", views.dash),
     path("addcategory", views.add_category),
     path("delcategory/<cat_id>", views.delete_category),
     path("addprofaneword", views.add_profane_word),
     path("delprofaneword/<id>", views.delete_profane_word),
+    path("posts/", views.posts, name="main_post_page")
 ]
