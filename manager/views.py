@@ -60,6 +60,17 @@ def sort(request, num):
     return admin_sort(request, num)
 
 
+def dash(request):
+    """ Main admin dashboard and redirect normal users to homepage in case they wrote the url manually"""
+    if(is_authorized_admin(request)):
+        posts_count = len(Post.objects.all())
+        admins_count = len(User.objects.filter(is_staff__exact=True))
+        normal_count = len(User.objects.filter(is_staff__exact=False))
+        return render(request, "manager/index.html", {"posts": posts_count, "admins": admins_count, "users": normal_count})
+    else:
+        return HttpResponseRedirect("/")
+
+
 """ end of users control views """
 
 """ statrrt of posts control views """
@@ -133,10 +144,3 @@ def delete_profane_word(request, id):
         return HttpResponseRedirect('/manager')
     else:
         return HttpResponseRedirect("/")
-
-
-def dash(request):
-    posts_count = len(Post.objects.all())
-    admins_count = len(User.objects.filter(is_staff__exact=True))
-    normal_count = len(User.objects.filter(is_staff__exact=False))
-    return render(request, "manager/index.html", {"posts": posts_count, "admins": admins_count, "users": normal_count})

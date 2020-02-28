@@ -1,4 +1,6 @@
-{% extends 'base.html' %} {% block main_block %} {% include "header.html" %}
+{% extends 'base.html' %}
+{% load static %}
+ {% block main_block %} {% include "header.html" %}
 <div class="container" id="colorlib-main">
   <div class="row myz-5">
     <div class="col-6">
@@ -34,8 +36,11 @@
       <h3 class="mb-5">
         Undesired Words Count : {{user.profile.undesired_words_count}}
       </h3>
+      <div class=" mx-auto " style="text-align: center;">
+  <a href="/manager/users" class="btn   px-5 mr-5 "> <img width="110" height="100" src="{% static 'users/imgs/back.png' %}"alt="back button image" srcset=""> </a>
+</div>
     </div>
   </div>
 </div>
-
+ 
 {% endblock %}
