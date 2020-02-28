@@ -92,7 +92,7 @@ def post_delete(request, post_id):
     if(is_authorized_admin(request)):
         post = Post.objects.get(id=post_id)
         post.delete()
-        return HttpResponseRedirect('/manager/')
+        return HttpResponseRedirect('/manager/posts')
     else:
         return HttpResponseRedirect("/")
 
@@ -105,7 +105,7 @@ def add_category(request):
             if form.is_valid():
                 form.save()
                 log("form is valid")
-                return HttpResponseRedirect('/manager')
+                return HttpResponseRedirect('/manager/posts#categories')
         else:
             context = {"pt_form": form}
             return render(request, "manager/categoryform.html", context)
@@ -117,7 +117,7 @@ def delete_category(request, cat_id):
     if(is_authorized_admin(request)):
         category = Category.objects.get(id=cat_id)
         category.delete()
-        return HttpResponseRedirect('/manager')
+        return HttpResponseRedirect('/manage/posts#categories')
     else:
         return HttpResponseRedirect("/")
 
@@ -129,7 +129,7 @@ def add_profane_word(request):
             form = ProfanityForm(request.POST)
             if form.is_valid():
                 form.save()
-                return HttpResponseRedirect('/manager')
+                return HttpResponseRedirect('/manager/posts#forbidden')
         else:
             context = {"pt_form": form}
             return render(request, "manager/form.html", context)
@@ -141,6 +141,6 @@ def delete_profane_word(request, id):
     if(is_authorized_admin(is_authorized_admin(request))):
         profane_word = Profanity.objects.get(id=id)
         profane_word.delete()
-        return HttpResponseRedirect('/manager')
+        return HttpResponseRedirect('/manager/posts#forbidden')
     else:
         return HttpResponseRedirect("/")
