@@ -2,7 +2,7 @@
 {% block post_block %}
 <div class="row pt-md-4">
 	<h1 class="mb-3">{{post.title}}</h1>
-	<p><img src="{{post.image_url}}" alt="" class="img-fluid"></p>
+	<p style="padding:10px; margin:20px; margin-left:50px"><img src="{{post.image_url}}" alt="" class="img-fluid"></p>
 	<p>{{post.body}}</p>
 	<div class="tag-widget post-tag-container mb-5 mt-5">
 		<div class="tagcloud">
@@ -12,7 +12,7 @@
 		</div>
 	</div>
 
-	<div class="about-author d-flex p-4 bg-light">
+	<div style="margin-top:100px;" class="about-author d-flex p-4 bg-light">
 		<div class="bio mr-5">
 		<img src="{{post.user.profile.profile_pic.url}}" alt="Image placeholder" class="img-fluid mb-4" width="200px" height="200px">
 		</div>
@@ -22,16 +22,16 @@
 		</div>
 	</div>
 	<br>
-{% if request.user == post.user %}
+{% if  request.user.is_authenticated %}
 	{% if not request.user in post.likes.all %}
-	<a href="/like_post/{{post.id}}">Like </a>
+	<a style="margin-right:10px;" href="/like_post/{{post.id}}">Like </a>
 	{% else %}
-	<a href="/like_post/{{post.id}}">UnLike </a>
+	<a style="margin-right:10px;" href="/like_post/{{post.id}}">UnLike </a>
 	{% endif %}
 	{% if not request.user in post.dislikes.all %}
-	<a href="/dislike_post/{{post.id}}">Disike </a>
+	<a  href="/dislike_post/{{post.id}}">Dislike </a>
 	{% else %}
-	<a href="/dislike_post/{{post.id}}">Undislike </a>
+	<a   href="/dislike_post/{{post.id}}">Undislike </a>
 	{% endif %}
 {% endif %}
 <div class="pt-5 mt-5">
